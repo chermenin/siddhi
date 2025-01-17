@@ -1,6 +1,11 @@
 *.class
 target/
 
+# Gradle build
+.gradle
+**/build/
+!src/**/build/
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
@@ -27,3 +32,6 @@ hs_err_pid*
 site/
 
 modules/siddhi-service/dependency-reduced-pom.xml
+
+# Keep Gradle wrapper JAR
+!gradle-wrapper.jar
