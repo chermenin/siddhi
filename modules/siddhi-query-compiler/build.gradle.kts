@@ -4,14 +4,47 @@
 
 plugins {
     id("buildlogic.java-conventions")
+    kotlin("jvm") version "2.0.0"
+    idea
+    java
+    antlr
 }
 
 dependencies {
+    antlr(libs.org.antlr.antlr4)
     api(project(":siddhi-query-api"))
     api(libs.org.apache.logging.log4j.log4j.api)
     api(libs.org.mvel.mvel2)
     api(libs.org.antlr.antlr4.runtime)
     testImplementation(libs.org.testng.testng)
+}
+
+tasks.generateGrammarSource {
+    outputDirectory = file("${project.layout.buildDirectory.get().asFile}/generated/sources/main/java/antlr")
+    arguments = arguments + listOf("-package", "io.siddhi.query.compiler", "-visitor", "-no-listener")
+    inputs.files(source.files)
+}
+
+tasks.compileJava {
+    dependsOn("generateGrammarSource")
+}
+
+tasks.compileTestJava {
+    dependsOn("generateTestGrammarSource")
+}
+
+idea {
+    module {
+        sourceDirs = sourceDirs + file("src/main/antlr")
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir(tasks.generateGrammarSource)
+        }
+    }
 }
 
 description = "Siddhi Query Compiler"
