@@ -18,6 +18,9 @@ allprojects {
             url = uri("https://oss.sonatype.org/content/repositories/releases/")
         }
         maven {
+            url = uri("https://dist.wso2.org/maven2/")
+        }
+        maven {
             url = uri("https://maven.wso2.org/nexus/content/repositories/public/")
         }
         maven {
