@@ -3,10 +3,7 @@
  */
 
 plugins {
-    id("buildlogic.java-conventions")
-    kotlin("jvm") version "2.0.0"
     idea
-    java
     antlr
 }
 

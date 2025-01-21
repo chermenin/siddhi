@@ -26,6 +26,7 @@ hs_err_pid*
 .settings/
 .cache-tests
 .cache-main
+.kotlin
 
 .DS_Store
 
