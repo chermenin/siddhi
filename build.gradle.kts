@@ -7,7 +7,7 @@ buildscript {
 }
 
 plugins {
-    `kotlin-dsl`
+    kotlin("jvm") version "2.1.0"
     `java-library`
 }
 
@@ -41,6 +41,11 @@ subprojects {
 
     apply {
         plugin("java-library")
+        plugin("kotlin")
+    }
+
+    kotlin {
+        jvmToolchain(11)
     }
 
     java.sourceCompatibility = JavaVersion.VERSION_11
