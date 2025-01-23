@@ -17,18 +17,20 @@
  */
 package io.siddhi.query.api.exception;
 
+import io.siddhi.query.api.ScriptIndex;
+
 /**
  * Exception thrown when duplicate attributes are defined
  */
 public class DuplicateAttributeException extends SiddhiAppValidationException {
 
-    public DuplicateAttributeException(String message, int[] queryContextStartIndex,
-                                       int[] queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
+    public DuplicateAttributeException(String message, ScriptIndex queryContextStartIndex,
+                                       ScriptIndex queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
 
         super(message, queryContextStartIndex, queryContextEndIndex, siddhiAppName, siddhiAppString);
     }
 
-    public DuplicateAttributeException(String message, int[] queryContextStartIndex, int[] queryContextEndIndex) {
+    public DuplicateAttributeException(String message, ScriptIndex queryContextStartIndex, ScriptIndex queryContextEndIndex) {
 
         super(message, queryContextStartIndex, queryContextEndIndex);
     }

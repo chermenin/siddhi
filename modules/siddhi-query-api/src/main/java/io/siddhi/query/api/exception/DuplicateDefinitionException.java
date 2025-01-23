@@ -17,25 +17,27 @@
  */
 package io.siddhi.query.api.exception;
 
+import io.siddhi.query.api.ScriptIndex;
+
 /**
  * Exception thrown when a similar definition is defined again
  */
 public class DuplicateDefinitionException extends SiddhiAppValidationException {
 
-    public DuplicateDefinitionException(String message, Throwable throwable, int[] queryContextStartIndex,
-                                        int[] queryContextEndIndex) {
+    public DuplicateDefinitionException(String message, Throwable throwable, ScriptIndex queryContextStartIndex,
+                                        ScriptIndex queryContextEndIndex) {
 
         super(message, throwable, queryContextStartIndex, queryContextEndIndex);
     }
 
-    public DuplicateDefinitionException(String message, int[] queryContextStartIndex,
-                                        int[] queryContextEndIndex) {
+    public DuplicateDefinitionException(String message, ScriptIndex queryContextStartIndex,
+                                        ScriptIndex queryContextEndIndex) {
 
         super(message, queryContextStartIndex, queryContextEndIndex);
     }
 
-    public DuplicateDefinitionException(String message, Throwable throwable, int[] queryContextStartIndex,
-                                        int[] queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
+    public DuplicateDefinitionException(String message, Throwable throwable, ScriptIndex queryContextStartIndex,
+                                        ScriptIndex queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
 
         super(message, throwable, queryContextStartIndex, queryContextEndIndex, siddhiAppName, siddhiAppString);
     }

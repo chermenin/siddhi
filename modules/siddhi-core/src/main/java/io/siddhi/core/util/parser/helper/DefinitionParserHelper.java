@@ -65,7 +65,7 @@ import io.siddhi.core.util.transport.OptionHolder;
 import io.siddhi.core.util.transport.SingleClientDistributedSink;
 import io.siddhi.core.window.Window;
 import io.siddhi.query.api.annotation.Annotation;
-import io.siddhi.query.api.annotation.Element;
+import io.siddhi.query.api.annotation.AnnotationElement;
 import io.siddhi.query.api.definition.AbstractDefinition;
 import io.siddhi.query.api.definition.AggregationDefinition;
 import io.siddhi.query.api.definition.Attribute;
@@ -105,24 +105,24 @@ public class DefinitionParserHelper {
                 StreamDefinition)) {
             throw new DuplicateDefinitionException("Table Definition with same Stream Id '" +
                     definition.getId() + "' already exist : " + existingTableDefinition +
-                    ", hence cannot add " + definition, definition.getQueryContextStartIndex(),
-                    definition.getQueryContextEndIndex());
+                    ", hence cannot add " + definition, definition.getContext().getStartIndex(),
+                    definition.getContext().getEndIndex());
         }
         AbstractDefinition existingStreamDefinition = streamDefinitionMap.get(definition.getId());
         if (existingStreamDefinition != null && (!existingStreamDefinition.equals(definition) || definition
                 instanceof TableDefinition)) {
             throw new DuplicateDefinitionException("Stream Definition with same Stream Id '" +
                     definition.getId() + "' already exist : " + existingStreamDefinition +
-                    ", hence cannot add " + definition, definition.getQueryContextStartIndex(),
-                    definition.getQueryContextEndIndex());
+                    ", hence cannot add " + definition, definition.getContext().getStartIndex(),
+                    definition.getContext().getEndIndex());
         }
         AbstractDefinition existingWindowDefinition = windowDefinitionMap.get(definition.getId());
         if (existingWindowDefinition != null && (!existingWindowDefinition.equals(definition) || definition
                 instanceof WindowDefinition)) {
             throw new DuplicateDefinitionException("Window Definition with same Window Id '" +
                     definition.getId() + "' already exist : " + existingWindowDefinition +
-                    ", hence cannot add " + definition, definition.getQueryContextStartIndex(),
-                    definition.getQueryContextEndIndex());
+                    ", hence cannot add " + definition, definition.getContext().getStartIndex(),
+                    definition.getContext().getEndIndex());
         }
         AbstractDefinition existingAggregationDefinition = aggregationDefinitionMap.get(definition.getId());
         if (existingAggregationDefinition != null
@@ -131,7 +131,7 @@ public class DefinitionParserHelper {
             throw new DuplicateDefinitionException(
                     "Aggregation Definition with same Aggregation Id '" + definition.getId() + "' already exist : "
                             + existingWindowDefinition + ", hence cannot add " + definition,
-                    definition.getQueryContextStartIndex(), definition.getQueryContextEndIndex());
+                    definition.getContext().getStartIndex(), definition.getContext().getEndIndex());
         }
     }
 
@@ -153,8 +153,8 @@ public class DefinitionParserHelper {
         if (!existingStream.equalsIgnoreAnnotations(outputStreamDefinition)) {
             throw new DuplicateDefinitionException("Different definition same as output '" +
                     outputStreamDefinition + "' already exist as '" + existingStream + "'",
-                    outputStreamDefinition.getQueryContextStartIndex(),
-                    outputStreamDefinition.getQueryContextEndIndex());
+                    outputStreamDefinition.getContext().getStartIndex(),
+                    outputStreamDefinition.getContext().getEndIndex());
         }
     }
 
@@ -420,7 +420,7 @@ public class DefinitionParserHelper {
                     + "' produces incompatible '" + Arrays.deepToString(outputEventClasses) +
                     "' classes, while it's source mapper '" + mapType + "' can only consume '" +
                     Arrays.deepToString(inputEventClasses) + "' classes.",
-                    sourceAnnotation.getQueryContextStartIndex(), sourceAnnotation.getQueryContextEndIndex());
+                    sourceAnnotation.getContext().getStartIndex(), sourceAnnotation.getContext().getEndIndex());
         }
     }
 
@@ -511,7 +511,7 @@ public class DefinitionParserHelper {
                             OptionHolder mapOptionHolder = constructOptionHolder(streamDefinition, mapAnnotation,
                                     sinkMapper.getClass().getAnnotation(io.siddhi.annotation.Extension.class),
                                     sinkMapper.getSupportedDynamicOptions(), false);
-                            List<Element> payloadElementList = getPayload(mapAnnotation);
+                            List<AnnotationElement> payloadElementList = getPayload(mapAnnotation);
 
                             OptionHolder distributionOptHolder = null;
                             SinkHandlerManager sinkHandlerManager = siddhiAppContext.getSiddhiContext().
@@ -582,7 +582,7 @@ public class DefinitionParserHelper {
                         }
                     } else {
                         throw new SiddhiAppCreationException("Both @sink(type=) and @map(type=) are required.",
-                                sinkAnnotation.getQueryContextStartIndex(), sinkAnnotation.getQueryContextEndIndex());
+                                sinkAnnotation.getContext().getStartIndex(), sinkAnnotation.getContext().getEndIndex());
                     }
                 } catch (Throwable t) {
                     ExceptionUtil.populateQueryContext(t, sinkAnnotation, siddhiAppContext);
@@ -621,7 +621,7 @@ public class DefinitionParserHelper {
                     "sink mapper '" + mapType + "' processes '" + Arrays.deepToString(outputEventClasses) +
                     "' classes but it's sink '" + sinkType + "' cannot not consume any of those class, where " +
                     "sink can only consume '" + Arrays.deepToString(inputEventClasses) + "' classes.",
-                    sinkAnnotation.getQueryContextStartIndex(), sinkAnnotation.getQueryContextEndIndex());
+                    sinkAnnotation.getContext().getStartIndex(), sinkAnnotation.getContext().getEndIndex());
         }
     }
 
@@ -671,7 +671,7 @@ public class DefinitionParserHelper {
             throw new SiddhiAppCreationException("Malformed '" + typeName + "' annotation type '" + typeValue + "' "
                     + "provided, for annotation '" + annotation + "' on stream '" + streamDefinition.getId() + "', "
                     + "it should be either '<namespace>:<name>' or '<name>'",
-                    annotation.getQueryContextStartIndex(), annotation.getQueryContextEndIndex());
+                    annotation.getContext().getStartIndex(), annotation.getContext().getEndIndex());
         }
         return new Extension() {
             @Override
@@ -694,12 +694,12 @@ public class DefinitionParserHelper {
             Map<String, String> elementMap = new HashMap<>();
             List<String> elementList = new ArrayList<>();
             Boolean attributesNameDefined = null;
-            for (Element element : attributeAnnotations.get(0).getElements()) {
+            for (AnnotationElement element : attributeAnnotations.get(0).getElements()) {
                 if (element.getKey() == null) {
                     if (attributesNameDefined != null && attributesNameDefined) {
                         throw new SiddhiAppCreationException("Error at '" + mapType + "' defined at stream'" +
                                 streamDefinition.getId() + "', some attributes are defined and some are not defined.",
-                                element.getQueryContextStartIndex(), element.getQueryContextEndIndex());
+                                element.getContext().getStartIndex(), element.getContext().getEndIndex());
                     }
                     attributesNameDefined = false;
                     elementList.add(element.getValue());
@@ -707,7 +707,7 @@ public class DefinitionParserHelper {
                     if (attributesNameDefined != null && !attributesNameDefined) {
                         throw new SiddhiAppCreationException("Error at '" + mapType + "' defined at stream '" +
                                 streamDefinition.getId() + "', some attributes are defined and some are not defined.",
-                                element.getQueryContextStartIndex(), element.getQueryContextEndIndex());
+                                element.getContext().getStartIndex(), element.getContext().getEndIndex());
                     }
                     attributesNameDefined = true;
                     elementMap.put(element.getKey(), element.getValue());
@@ -721,7 +721,7 @@ public class DefinitionParserHelper {
                     if (value == null) {
                         throw new SiddhiAppCreationException("Error at '" + mapType + "' defined at stream '" +
                                 streamDefinition.getId() + "', attribute '" + attribute.getName() + "' is not mapped.",
-                                mapAnnotation.getQueryContextStartIndex(), mapAnnotation.getQueryContextEndIndex());
+                                mapAnnotation.getContext().getStartIndex(), mapAnnotation.getContext().getEndIndex());
                     }
                     assignMapping(attributesHolder, elementMap, i, attribute);
                 }
@@ -731,7 +731,7 @@ public class DefinitionParserHelper {
                     throw new SiddhiAppCreationException("Error at '" + mapType + "' defined at stream '" +
                             streamDefinition.getId() + "', '" + elementList.size() + "' mapping attributes are " +
                             "provided but expected attributes are '" + attributeList.size() + "'.",
-                            mapAnnotation.getQueryContextStartIndex(), mapAnnotation.getQueryContextEndIndex());
+                            mapAnnotation.getContext().getStartIndex(), mapAnnotation.getContext().getEndIndex());
                 } else {
                     for (int i = 0; i < attributeList.size(); i++) {
                         Attribute attribute = attributeList.get(i);
@@ -760,14 +760,14 @@ public class DefinitionParserHelper {
         }
     }
 
-    private static List<Element> getPayload(Annotation mapAnnotation) {
+    private static List<AnnotationElement> getPayload(Annotation mapAnnotation) {
         List<Annotation> attributeAnnotations = mapAnnotation.getAnnotations(SiddhiConstants.ANNOTATION_PAYLOAD);
         if (attributeAnnotations.size() == 1) {
-            List<Element> elements = attributeAnnotations.get(0).getElements();
+            List<AnnotationElement> elements = attributeAnnotations.get(0).getElements();
             return elements;
         } else if (attributeAnnotations.size() > 1) {
             throw new SiddhiAppCreationException("@map() annotation should only contain single @payload() " +
-                    "annotation.", mapAnnotation.getQueryContextStartIndex(), mapAnnotation.getQueryContextEndIndex());
+                    "annotation.", mapAnnotation.getContext().getStartIndex(), mapAnnotation.getContext().getEndIndex());
         } else {
             return null;
         }
@@ -785,13 +785,13 @@ public class DefinitionParserHelper {
 
         Map<String, String> options = new HashMap<>();
         Map<String, String> dynamicOptions = new HashMap<>();
-        for (Element element : annotation.getElements()) {
+        for (AnnotationElement element : annotation.getElements()) {
             if (element.getKey().startsWith("dep:")) {
                 if (!supportDeploymentOptions) {
                     throw new SiddhiAppCreationException("DeploymentOption is not supported by '" +
                             extension.namespace() + ":" + extension.name() + "', but a deployment property '" +
                             element.getKey() + "' is configured",
-                            annotation.getQueryContextStartIndex(), annotation.getQueryContextEndIndex());
+                            annotation.getContext().getStartIndex(), annotation.getContext().getEndIndex());
                 }
             }
             if (Pattern.matches("(.*?)\\{\\{.*?\\}\\}(.*?)", element.getValue())) {
@@ -801,7 +801,7 @@ public class DefinitionParserHelper {
                     throw new SiddhiAppCreationException("'" + element.getKey() + "' is not a supported " +
                             "DynamicOption " + "for the Extension '" + extension.namespace() + ":" + extension.name() +
                             "', it only supports following as its DynamicOptions: " + supportedDynamicOptionList,
-                            annotation.getQueryContextStartIndex(), annotation.getQueryContextEndIndex());
+                            annotation.getContext().getStartIndex(), annotation.getContext().getEndIndex());
                 }
             } else {
                 options.put(element.getKey(), element.getValue());
@@ -861,13 +861,13 @@ public class DefinitionParserHelper {
     private static Map<String, String> createDeploymentProperties(Annotation annotation,
                                                                   io.siddhi.annotation.Extension extension) {
         Map<String, String> deploymentOptions = new HashMap<>();
-        for (Element element : annotation.getElements()) {
+        for (AnnotationElement element : annotation.getElements()) {
             if (element.getKey().startsWith("dep:")) {
                 if (Pattern.matches("(.*?)\\{\\{.*?\\}\\}(.*?)", element.getValue())) {
                     throw new SiddhiAppCreationException("DeploymentOption cannot have dynamic parameters, but '"
                             + element.getKey() + "' of '" + extension.namespace() + ":" + extension.name() +
                             "' is configured with '" + element.getValue() + "'",
-                            annotation.getQueryContextStartIndex(), annotation.getQueryContextEndIndex());
+                            annotation.getContext().getStartIndex(), annotation.getContext().getEndIndex());
                 } else {
                     deploymentOptions.put(element.getKey().substring(4), element.getValue());
                 }
@@ -901,18 +901,18 @@ public class DefinitionParserHelper {
             if (systemConfigs.size() == 0) {
                 throw new SiddhiAppCreationException("The " + type + " element of the name '" + ref +
                         "' is not defined in the configurations file.",
-                        annotation.getQueryContextStartIndex(),
-                        annotation.getQueryContextEndIndex());
+                        annotation.getContext().getStartIndex(),
+                        annotation.getContext().getEndIndex());
             } else {
                 HashMap<String, String> newSystemConfig = new HashMap<>(systemConfigs);
 
                 Map<String, String> collection = annotation.getElements().stream()
-                        .collect(Collectors.toMap(Element::getKey, Element::getValue));
+                        .collect(Collectors.toMap(AnnotationElement::getKey, AnnotationElement::getValue));
                 collection.remove(SiddhiConstants.ANNOTATION_ELEMENT_REF);
                 newSystemConfig.putAll(collection);
 
-                List<Element> annotationElements = newSystemConfig.entrySet().stream()
-                        .map((property) -> new Element(
+                List<AnnotationElement> annotationElements = newSystemConfig.entrySet().stream()
+                        .map((property) -> new AnnotationElement(
                                 property.getKey(),
                                 property.getValue()))
                         .collect(Collectors.toList());

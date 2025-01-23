@@ -18,20 +18,18 @@
 
 package io.siddhi.query.api.definition;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 import io.siddhi.query.api.expression.constant.TimeConstant;
 
 /**
  * Siddhi Trigger Definition
  */
-public class TriggerDefinition implements SiddhiElement {
+public class TriggerDefinition extends Element {
 
     private static final long serialVersionUID = 1L;
     private String id;
     private Long atEvery;
     private String at;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
     public TriggerDefinition() {
 
@@ -78,29 +76,5 @@ public class TriggerDefinition implements SiddhiElement {
 
         this.atEvery = time.value();
         return this;
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 }

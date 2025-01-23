@@ -17,7 +17,7 @@
  */
 package io.siddhi.query.api.execution.query;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 import io.siddhi.query.api.annotation.Annotation;
 import io.siddhi.query.api.execution.ExecutionElement;
 import io.siddhi.query.api.execution.query.input.stream.InputStream;
@@ -39,16 +39,14 @@ import java.util.List;
 /**
  * Siddhi Query
  */
-public class Query implements ExecutionElement, SiddhiElement {
+public class Query extends Element implements ExecutionElement {
 
     private static final long serialVersionUID = 1L;
     private InputStream inputStream;
     private Selector selector = new Selector();
     private OutputStream outputStream = new ReturnStream(OutputStream.OutputEventType.CURRENT_EVENTS);
     private OutputRate outputRate;
-    private List<Annotation> annotations = new ArrayList<Annotation>();
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
+    private List<Annotation> annotations = new ArrayList<>();
 
     public static Query query() {
 
@@ -285,29 +283,4 @@ public class Query implements ExecutionElement, SiddhiElement {
         result = 31 * result + (annotations != null ? annotations.hashCode() : 0);
         return result;
     }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
-    }
-
 }

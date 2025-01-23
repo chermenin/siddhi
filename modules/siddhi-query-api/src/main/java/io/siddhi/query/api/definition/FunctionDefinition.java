@@ -18,20 +18,18 @@
 
 package io.siddhi.query.api.definition;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 
 /**
  * Siddhi inline function definition
  */
-public class FunctionDefinition implements SiddhiElement {
+public class FunctionDefinition extends Element {
 
     private static final long serialVersionUID = 42L;
     private String language;
     private String body;
     private String id;
     private Attribute.Type returnType;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
     public Attribute.Type getReturnType() {
 
@@ -75,29 +73,5 @@ public class FunctionDefinition implements SiddhiElement {
 
         this.returnType = type;
         return this;
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 }

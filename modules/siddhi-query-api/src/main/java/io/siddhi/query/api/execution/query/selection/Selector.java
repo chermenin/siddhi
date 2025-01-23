@@ -17,7 +17,7 @@
  */
 package io.siddhi.query.api.execution.query.selection;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 import io.siddhi.query.api.exception.DuplicateAttributeException;
 import io.siddhi.query.api.exception.UnsupportedAttributeTypeException;
 import io.siddhi.query.api.expression.Expression;
@@ -32,15 +32,13 @@ import java.util.List;
 /**
  * Selector selecting query output stream attributes
  */
-public class Selector implements SiddhiElement {
+public class Selector extends Element {
 
     private static final long serialVersionUID = 1L;
     private List<OutputAttribute> selectionList = new ArrayList<OutputAttribute>();
     private List<Variable> groupByList = new ArrayList<Variable>();
     private List<OrderByAttribute> orderByList = new ArrayList<OrderByAttribute>();
     private Expression havingExpression;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
     private Constant limit;
     private Constant offset;
 
@@ -75,7 +73,7 @@ public class Selector implements SiddhiElement {
         for (OutputAttribute attribute : selectionList) {
             if (attribute.getRename().equals(newAttribute.getRename())) {
                 throw new DuplicateAttributeException(newAttribute.getRename() + " is already defined as an output " +
-                        "attribute ", newAttribute.getQueryContextStartIndex(), attribute.getQueryContextEndIndex());
+                        "attribute ", newAttribute.getContext().getStartIndex(), attribute.getContext().getEndIndex());
             }
         }
     }
@@ -235,29 +233,5 @@ public class Selector implements SiddhiElement {
         result = 31 * result + (limit != null ? limit.hashCode() : 0);
         result = 31 * result + (offset != null ? offset.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 }

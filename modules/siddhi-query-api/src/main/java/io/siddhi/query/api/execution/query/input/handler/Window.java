@@ -17,7 +17,7 @@
  */
 package io.siddhi.query.api.execution.query.input.handler;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 import io.siddhi.query.api.expression.Expression;
 import io.siddhi.query.api.extension.Extension;
 
@@ -26,14 +26,12 @@ import java.util.Arrays;
 /**
  * Siddhi window handler
  */
-public class Window implements StreamHandler, Extension, SiddhiElement {
+public class Window extends StreamHandler implements Extension {
 
     private static final long serialVersionUID = 1L;
     private String namespace;
     private String function;
     private Expression[] parameters;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
     public Window(String namespace, String functionName, Expression[] parameters) {
 
@@ -111,29 +109,5 @@ public class Window implements StreamHandler, Extension, SiddhiElement {
                 ", function='" + function + '\'' +
                 ", parameters=" + Arrays.toString(parameters) +
                 '}';
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 }

@@ -17,7 +17,7 @@
  */
 package io.siddhi.query.api.execution.query.input.stream;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 import io.siddhi.query.api.aggregation.Within;
 import io.siddhi.query.api.execution.query.Query;
 import io.siddhi.query.api.execution.query.input.state.StateElement;
@@ -29,11 +29,9 @@ import java.util.List;
 /**
  * Input stream in queries
  */
-public abstract class InputStream implements SiddhiElement {
+public abstract class InputStream extends Element {
 
     private static final long serialVersionUID = 1L;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
     public static InputStream joinStream(SingleInputStream leftStream, JoinInputStream.Type type,
                                          SingleInputStream rightStream) {
@@ -155,28 +153,4 @@ public abstract class InputStream implements SiddhiElement {
     public abstract List<String> getAllStreamIds();
 
     public abstract List<String> getUniqueStreamIds();
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
-    }
 }

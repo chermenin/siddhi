@@ -17,6 +17,7 @@
  */
 package io.siddhi.query.compiler.exception;
 
+import io.siddhi.query.api.ScriptIndex;
 import io.siddhi.query.api.exception.SiddhiAppContextException;
 import io.siddhi.query.api.util.ExceptionUtil;
 
@@ -26,8 +27,8 @@ import io.siddhi.query.api.util.ExceptionUtil;
 public class SiddhiParserException extends RuntimeException implements SiddhiAppContextException {
 
     private String message;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
+    private ScriptIndex queryContextStartIndex;
+    private ScriptIndex queryContextEndIndex;
     private String siddhiAppName = null;
     private String siddhiAppPortion = null;
 
@@ -48,40 +49,40 @@ public class SiddhiParserException extends RuntimeException implements SiddhiApp
         super(throwable);
     }
 
-    public SiddhiParserException(String message, int[] queryContextStartIndex,
-                                 int[] queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
+    public SiddhiParserException(String message, ScriptIndex queryContextStartIndex,
+                                 ScriptIndex queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
 
         super(message);
         this.message = message;
         setQueryContextIndexIfAbsent(queryContextStartIndex, queryContextEndIndex, siddhiAppName, siddhiAppString);
     }
 
-    public SiddhiParserException(String message, Throwable throwable, int[] queryContextStartIndex,
-                                 int[] queryContextEndIndex) {
+    public SiddhiParserException(String message, Throwable throwable, ScriptIndex queryContextStartIndex,
+                                 ScriptIndex queryContextEndIndex) {
 
         super(message, throwable);
         this.message = message;
         setQueryContextIndexIfAbsent(queryContextStartIndex, queryContextEndIndex, siddhiAppName, null);
     }
 
-    public SiddhiParserException(String message, int[] queryContextStartIndex,
-                                 int[] queryContextEndIndex) {
+    public SiddhiParserException(String message, ScriptIndex queryContextStartIndex,
+                                 ScriptIndex queryContextEndIndex) {
 
         super(message);
         this.message = message;
         setQueryContextIndexIfAbsent(queryContextStartIndex, queryContextEndIndex, siddhiAppName, null);
     }
 
-    public SiddhiParserException(String message, Throwable throwable, int[] queryContextStartIndex,
-                                 int[] queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
+    public SiddhiParserException(String message, Throwable throwable, ScriptIndex queryContextStartIndex,
+                                 ScriptIndex queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
 
         super(message, throwable);
         this.message = message;
         setQueryContextIndexIfAbsent(queryContextStartIndex, queryContextEndIndex, siddhiAppName, siddhiAppString);
     }
 
-    public void setQueryContextIndexIfAbsent(int[] queryContextStartIndex,
-                                             int[] queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
+    public void setQueryContextIndexIfAbsent(ScriptIndex queryContextStartIndex,
+                                             ScriptIndex queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
 
         if (this.siddhiAppName == null) {
             this.siddhiAppName = siddhiAppName;
@@ -98,17 +99,16 @@ public class SiddhiParserException extends RuntimeException implements SiddhiApp
         }
     }
 
-    public int[] getQueryContextStartIndex() {
+    public ScriptIndex getQueryContextStartIndex() {
 
         return queryContextStartIndex;
     }
 
-    public int[] getQueryContextEndIndex() {
+    public ScriptIndex getQueryContextEndIndex() {
 
         return queryContextEndIndex;
     }
 
-    @Override
     public String getMessageWithOutContext() {
 
         return this.message;

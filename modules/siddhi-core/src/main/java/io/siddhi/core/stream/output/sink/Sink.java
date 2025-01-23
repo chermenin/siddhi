@@ -42,7 +42,7 @@ import io.siddhi.core.util.statistics.metrics.Level;
 import io.siddhi.core.util.transport.BackoffRetryCounter;
 import io.siddhi.core.util.transport.DynamicOptions;
 import io.siddhi.core.util.transport.OptionHolder;
-import io.siddhi.query.api.annotation.Element;
+import io.siddhi.query.api.annotation.AnnotationElement;
 import io.siddhi.query.api.definition.StreamDefinition;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -84,7 +84,7 @@ public abstract class Sink<S extends State> implements SinkListener {
 
     public final void init(StreamDefinition streamDefinition, String type, OptionHolder transportOptionHolder,
                            ConfigReader sinkConfigReader, SinkMapper sinkMapper, String mapType,
-                           OptionHolder mapOptionHolder, SinkHandler sinkHandler, List<Element> payloadElementList,
+                           OptionHolder mapOptionHolder, SinkHandler sinkHandler, List<AnnotationElement> payloadElementList,
                            ConfigReader mapperConfigReader, Map<String, String> deploymentProperties,
                            StreamJunction streamJunction, SiddhiAppContext siddhiAppContext) {
         this.streamDefinition = streamDefinition;

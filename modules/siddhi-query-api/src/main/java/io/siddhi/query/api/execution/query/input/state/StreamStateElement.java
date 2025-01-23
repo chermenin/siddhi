@@ -22,12 +22,10 @@ import io.siddhi.query.api.execution.query.input.stream.BasicSingleInputStream;
 /**
  * State element containing the event stream
  */
-public class StreamStateElement implements StateElement {
+public class StreamStateElement extends StateElement {
 
     private static final long serialVersionUID = 1L;
     private final BasicSingleInputStream basicSingleInputStream;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
     public StreamStateElement(BasicSingleInputStream basicSingleInputStream) {
 
@@ -71,29 +69,5 @@ public class StreamStateElement implements StateElement {
     public int hashCode() {
 
         return basicSingleInputStream != null ? basicSingleInputStream.hashCode() : 0;
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 }

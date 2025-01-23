@@ -440,7 +440,7 @@ public class ExpressionParser {
                     } catch (SiddhiAppCreationException e) {
                         throw new ExtensionNotFoundException("'" + ((AttributeFunction) expression).getName() + "' is"
                                 + " neither a function extension nor an aggregated attribute extension",
-                                expression.getQueryContextStartIndex(), expression.getQueryContextEndIndex());
+                                expression.getContext().getStartIndex(), expression.getContext().getEndIndex());
                     }
                 }
                 ConfigReader configReader = siddhiQueryContext.getSiddhiContext().getConfigManager().generateConfigReader(
@@ -517,7 +517,7 @@ public class ExpressionParser {
                         MetaStateEvent metaStateEvent = (MetaStateEvent) metaEvent;
                         if (streamId == null) {
                             throw new SiddhiAppCreationException("IsNull does not support streamId being null",
-                                    expression.getQueryContextStartIndex(), expression.getQueryContextEndIndex());
+                                    expression.getContext().getStartIndex(), expression.getContext().getEndIndex());
                         } else {
                             MetaStreamEvent[] metaStreamEvents = metaStateEvent.getMetaStreamEvents();
                             for (int i = 0, metaStreamEventsLength = metaStreamEvents.length; i < metaStreamEventsLength; i++) {
@@ -1562,7 +1562,7 @@ public class ExpressionParser {
                                 }
                                 throw new DuplicateAttributeException(
                                         "Duplicate attribute exist in streams " + definitions,
-                                        attribute.getQueryContextStartIndex(), attribute.getQueryContextEndIndex());
+                                        attribute.getContext().getStartIndex(), attribute.getContext().getEndIndex());
                             }
                         }
                     }

@@ -30,7 +30,7 @@ import io.siddhi.core.util.snapshot.state.StateFactory;
 import io.siddhi.core.util.transport.DynamicOptions;
 import io.siddhi.core.util.transport.OptionHolder;
 import io.siddhi.query.api.annotation.Annotation;
-import io.siddhi.query.api.annotation.Element;
+import io.siddhi.query.api.annotation.AnnotationElement;
 import io.siddhi.query.api.definition.StreamDefinition;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -94,7 +94,7 @@ public abstract class DistributedTransport extends Sink {
     public void init(StreamDefinition streamDefinition, String type, OptionHolder transportOptionHolder,
                      ConfigReader sinkConfigReader,
                      SinkMapper sinkMapper, String mapType, OptionHolder mapOptionHolder, SinkHandler sinkHandler,
-                     List<Element> payloadElementList, ConfigReader mapperConfigReader,
+                     List<AnnotationElement> payloadElementList, ConfigReader mapperConfigReader,
                      StreamJunction streamJunction, SiddhiAppContext siddhiAppContext,
                      List<OptionHolder> destinationOptionHolders, Annotation sinkAnnotation,
                      DistributionStrategy strategy, String[] supportedDynamicOptions,

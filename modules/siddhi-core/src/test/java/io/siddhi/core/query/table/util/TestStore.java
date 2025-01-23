@@ -28,7 +28,7 @@ import io.siddhi.core.table.record.RecordIterator;
 import io.siddhi.core.util.collection.operator.CompiledCondition;
 import io.siddhi.core.util.collection.operator.CompiledExpression;
 import io.siddhi.core.util.config.ConfigReader;
-import io.siddhi.query.api.annotation.Element;
+import io.siddhi.query.api.annotation.AnnotationElement;
 import io.siddhi.query.api.definition.TableDefinition;
 import io.siddhi.query.api.util.AnnotationHelper;
 

@@ -20,14 +20,12 @@ package io.siddhi.query.api.execution.query.input.state;
 /**
  * Logical state element used in pattern to handle logical operations
  */
-public class LogicalStateElement implements StateElement {
+public class LogicalStateElement extends StateElement {
 
     private static final long serialVersionUID = 1L;
     protected StreamStateElement streamStateElement1;
     protected Type type;
     protected StreamStateElement streamStateElement2;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
     public LogicalStateElement(StreamStateElement streamStateElement1, Type type,
                                StreamStateElement streamStateElement2) {
@@ -95,30 +93,6 @@ public class LogicalStateElement implements StateElement {
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (streamStateElement2 != null ? streamStateElement2.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 
     /**

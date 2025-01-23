@@ -18,8 +18,9 @@
 package io.siddhi.core.exception;
 
 import io.siddhi.core.config.SiddhiAppContext;
+import io.siddhi.query.api.ScriptIndex;
 import io.siddhi.query.api.SiddhiApp;
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 import io.siddhi.query.api.exception.SiddhiAppContextException;
 import io.siddhi.query.api.util.ExceptionUtil;
 
@@ -29,8 +30,8 @@ import io.siddhi.query.api.util.ExceptionUtil;
 public class SiddhiAppCreationException extends RuntimeException implements SiddhiAppContextException {
     boolean classLoadingIssue = false;
     private String message;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
+    private ScriptIndex queryContextStartIndex;
+    private ScriptIndex queryContextEndIndex;
     private String siddhiAppName = null;
     private String siddhiAppPortion = null;
 
@@ -62,37 +63,37 @@ public class SiddhiAppCreationException extends RuntimeException implements Sidd
         this.message = throwable.getMessage();
     }
 
-    public SiddhiAppCreationException(String message, int[] queryContextStartIndex,
-                                      int[] queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
+    public SiddhiAppCreationException(String message, ScriptIndex queryContextStartIndex,
+                                      ScriptIndex queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
         super(message);
         this.message = message;
         setQueryContextIndexIfAbsent(queryContextStartIndex, queryContextEndIndex, siddhiAppName, siddhiAppString);
     }
 
-    public SiddhiAppCreationException(String message, SiddhiElement siddhiElement,
+    public SiddhiAppCreationException(String message, Element Element,
                                       SiddhiAppContext siddhiAppContext) {
         super(message);
         this.message = message;
-        setQueryContextIndexIfAbsent(siddhiElement.getQueryContextStartIndex(), siddhiElement.getQueryContextEndIndex(),
+        setQueryContextIndexIfAbsent(Element.getContext().getStartIndex(), Element.getContext().getEndIndex(),
                 siddhiAppContext.getName(), siddhiAppContext.getSiddhiAppString());
     }
 
-    public SiddhiAppCreationException(String message, Throwable throwable, int[] queryContextStartIndex,
-                                      int[] queryContextEndIndex) {
+    public SiddhiAppCreationException(String message, Throwable throwable, ScriptIndex queryContextStartIndex,
+                                      ScriptIndex queryContextEndIndex) {
         super(message, throwable);
         this.message = message;
         setQueryContextIndexIfAbsent(queryContextStartIndex, queryContextEndIndex, siddhiAppName, null);
     }
 
-    public SiddhiAppCreationException(String message, int[] queryContextStartIndex,
-                                      int[] queryContextEndIndex) {
+    public SiddhiAppCreationException(String message, ScriptIndex queryContextStartIndex,
+                                      ScriptIndex queryContextEndIndex) {
         super(message);
         this.message = message;
         setQueryContextIndexIfAbsent(queryContextStartIndex, queryContextEndIndex, siddhiAppName, null);
     }
 
-    public SiddhiAppCreationException(String message, Throwable throwable, int[] queryContextStartIndex,
-                                      int[] queryContextEndIndex, SiddhiAppContext siddhiAppContext) {
+    public SiddhiAppCreationException(String message, Throwable throwable, ScriptIndex queryContextStartIndex,
+                                      ScriptIndex queryContextEndIndex, SiddhiAppContext siddhiAppContext) {
         super(message, throwable);
         this.message = message;
         if (siddhiAppContext != null) {
@@ -103,8 +104,8 @@ public class SiddhiAppCreationException extends RuntimeException implements Sidd
         }
     }
 
-    public SiddhiAppCreationException(String message, Throwable throwable, int[] queryContextStartIndex,
-                                      int[] queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
+    public SiddhiAppCreationException(String message, Throwable throwable, ScriptIndex queryContextStartIndex,
+                                      ScriptIndex queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
         super(message, throwable);
         this.message = message;
         setQueryContextIndexIfAbsent(queryContextStartIndex, queryContextEndIndex, siddhiAppName, siddhiAppString);
@@ -114,8 +115,8 @@ public class SiddhiAppCreationException extends RuntimeException implements Sidd
         return classLoadingIssue;
     }
 
-    public void setQueryContextIndexIfAbsent(int[] queryContextStartIndex,
-                                             int[] queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
+    public void setQueryContextIndexIfAbsent(ScriptIndex queryContextStartIndex,
+                                             ScriptIndex queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
         if (this.siddhiAppName == null) {
             this.siddhiAppName = siddhiAppName;
         }
@@ -131,11 +132,11 @@ public class SiddhiAppCreationException extends RuntimeException implements Sidd
         }
     }
 
-    public int[] getQueryContextStartIndex() {
+    public ScriptIndex getQueryContextStartIndex() {
         return queryContextStartIndex;
     }
 
-    public int[] getQueryContextEndIndex() {
+    public ScriptIndex getQueryContextEndIndex() {
         return queryContextEndIndex;
     }
 

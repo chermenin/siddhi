@@ -161,8 +161,7 @@ public class SelectorParser {
 
         List<AttributeProcessor> attributeProcessorList = new ArrayList<>();
         StreamDefinition outputDefinition = StreamDefinition.id(id);
-        outputDefinition.setQueryContextStartIndex(outputStream.getQueryContextStartIndex());
-        outputDefinition.setQueryContextEndIndex(outputStream.getQueryContextEndIndex());
+        outputDefinition.setContext(outputStream.getContext());
         List<OutputAttribute> outputAttributes = selector.getSelectionList();
         if (selector.getSelectionList().size() == 0) {
             if (metaComplexEvent instanceof MetaStreamEvent) {
@@ -171,11 +170,9 @@ public class SelectorParser {
                         .getAttributeList();
                 for (Attribute attribute : attributeList) {
                     Variable variable = new Variable(attribute.getName());
-                    variable.setQueryContextStartIndex(selector.getQueryContextStartIndex());
-                    variable.setQueryContextEndIndex(selector.getQueryContextEndIndex());
+                    variable.setContext(selector.getContext());
                     OutputAttribute outputAttribute = new OutputAttribute(variable);
-                    outputAttribute.setQueryContextStartIndex(selector.getQueryContextStartIndex());
-                    outputAttribute.setQueryContextEndIndex(selector.getQueryContextEndIndex());
+                    outputAttribute.setContext(selector.getContext());
                     outputAttributes.add(outputAttribute);
                 }
             } else {
@@ -185,11 +182,9 @@ public class SelectorParser {
                         List<Attribute> attributeList = metaStreamEvent.getLastInputDefinition().getAttributeList();
                         for (Attribute attribute : attributeList) {
                             Variable variable = new Variable(attribute.getName());
-                            variable.setQueryContextStartIndex(selector.getQueryContextStartIndex());
-                            variable.setQueryContextEndIndex(selector.getQueryContextEndIndex());
+                            variable.setContext(selector.getContext());
                             OutputAttribute outputAttribute = new OutputAttribute(variable);
-                            outputAttribute.setQueryContextStartIndex(selector.getQueryContextStartIndex());
-                            outputAttribute.setQueryContextEndIndex(selector.getQueryContextEndIndex());
+                            outputAttribute.setContext(selector.getContext());
                             if (!outputAttributes.contains(outputAttribute)) {
                                 outputAttributes.add(outputAttribute);
                             } else {
@@ -199,8 +194,8 @@ public class SelectorParser {
                                     definitions.add(aMetaStreamEvent.getLastInputDefinition());
                                 }
                                 throw new DuplicateAttributeException("Duplicate attribute exist in streams " +
-                                        definitions, outputStream.getQueryContextStartIndex(),
-                                        outputStream.getQueryContextEndIndex());
+                                        definitions, outputStream.getContext().getStartIndex(),
+                                        outputStream.getContext().getEndIndex());
                             }
                         }
                     }

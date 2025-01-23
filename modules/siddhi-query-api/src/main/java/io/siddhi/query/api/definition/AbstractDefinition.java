@@ -17,7 +17,7 @@
  */
 package io.siddhi.query.api.definition;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 import io.siddhi.query.api.annotation.Annotation;
 import io.siddhi.query.api.exception.AttributeNotExistException;
 import io.siddhi.query.api.exception.DuplicateAttributeException;
@@ -29,16 +29,14 @@ import java.util.Locale;
 /**
  * Abstract definition used for Streams, Tables and other common artifacts
  */
-public abstract class AbstractDefinition implements SiddhiElement {
+public abstract class AbstractDefinition extends Element {
 
     private static final long serialVersionUID = 1L;
     protected String id;
-    protected List<Attribute> attributeList = new ArrayList<Attribute>();
+    protected List<Attribute> attributeList = new ArrayList<>();
     protected String[] attributeNameArray = new String[0];
     protected boolean hasDefinitionChanged = false;
-    protected List<Annotation> annotations = new ArrayList<Annotation>();
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
+    protected List<Annotation> annotations = new ArrayList<>();
 
     protected AbstractDefinition() {
 
@@ -87,8 +85,8 @@ public abstract class AbstractDefinition implements SiddhiElement {
         for (Attribute attribute : attributeList) {
             if (attribute.getName().equals(attributeName)) {
                 throw new DuplicateAttributeException("'" + attributeName + "' is already defined for with type '" +
-                        attribute.getType() + "' for '" + id + "'; " + this.toString(),
-                        attribute.getQueryContextStartIndex(), attribute.getQueryContextEndIndex());
+                        attribute.getType() + "' for '" + id + "'; " + this,
+                        attribute.getContext().getStartIndex(), attribute.getContext().getEndIndex());
             }
         }
     }
@@ -213,29 +211,5 @@ public abstract class AbstractDefinition implements SiddhiElement {
         }
 
         return true;
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 }

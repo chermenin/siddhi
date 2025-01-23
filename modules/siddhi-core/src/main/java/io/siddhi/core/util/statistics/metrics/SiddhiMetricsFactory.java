@@ -24,7 +24,7 @@ import io.siddhi.core.util.statistics.MemoryUsageTracker;
 import io.siddhi.core.util.statistics.StatisticsManager;
 import io.siddhi.core.util.statistics.StatisticsTrackerFactory;
 import io.siddhi.core.util.statistics.ThroughputTracker;
-import io.siddhi.query.api.annotation.Element;
+import io.siddhi.query.api.annotation.AnnotationElement;
 
 import java.util.List;
 
@@ -50,7 +50,7 @@ public class SiddhiMetricsFactory implements StatisticsTrackerFactory {
     }
 
     @Override
-    public StatisticsManager createStatisticsManager(String prefix, String siddhiAppName, List<Element> elements) {
+    public StatisticsManager createStatisticsManager(String prefix, String siddhiAppName, List<AnnotationElement> elements) {
         return new SiddhiStatisticsManager(elements);
     }
 

@@ -20,12 +20,10 @@ package io.siddhi.query.api.execution.query.input.state;
 /**
  * Every state element used in patterns to trigger repeated operations
  */
-public class EveryStateElement implements StateElement {
+public class EveryStateElement extends StateElement {
 
     private static final long serialVersionUID = 1L;
     private StateElement stateElement;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
     public EveryStateElement(StateElement stateElement) {
 
@@ -68,29 +66,5 @@ public class EveryStateElement implements StateElement {
 
         int result = stateElement != null ? stateElement.hashCode() : 0;
         return result;
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 }

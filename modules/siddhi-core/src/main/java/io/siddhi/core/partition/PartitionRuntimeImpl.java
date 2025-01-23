@@ -38,7 +38,7 @@ import io.siddhi.core.util.snapshot.state.State;
 import io.siddhi.core.util.snapshot.state.StateHolder;
 import io.siddhi.core.util.statistics.MemoryUsageTracker;
 import io.siddhi.query.api.annotation.Annotation;
-import io.siddhi.query.api.annotation.Element;
+import io.siddhi.query.api.annotation.AnnotationElement;
 import io.siddhi.query.api.definition.AbstractDefinition;
 import io.siddhi.query.api.definition.StreamDefinition;
 import io.siddhi.query.api.exception.DuplicateAnnotationException;
@@ -103,7 +103,7 @@ public class PartitionRuntimeImpl implements PartitionRuntime {
                     "But found none.");
         }
         try {
-            Element element = AnnotationHelper.getAnnotationElement("info", "name",
+            AnnotationElement element = AnnotationHelper.getAnnotationElement("info", "name",
                     partition.getAnnotations());
             if (element != null) {
                 this.partitionName = element.getValue();

@@ -33,6 +33,7 @@
 
 package io.siddhi.query.compiler;
 
+import io.siddhi.query.api.ScriptIndex;
 import io.siddhi.query.api.SiddhiApp;
 import io.siddhi.query.api.definition.AggregationDefinition;
 import io.siddhi.query.api.definition.FunctionDefinition;
@@ -262,12 +263,12 @@ public class SiddhiCompiler {
                             String appName = appNameMatcher.group(2);
                             throw new SiddhiParserException("No system or environmental variable found for '${"
                                     + key + "}', for Siddhi App '" + appName + "'",
-                                    new int[]{lineNumber, startIndex - lineStartIndex},
-                                    new int[]{lineNumber, endIndex - lineStartIndex});
+                                    new ScriptIndex(lineNumber, startIndex - lineStartIndex),
+                                    new ScriptIndex(lineNumber, endIndex - lineStartIndex));
                         } else {
                             throw new SiddhiParserException("No system or environmental variable found for '${"
-                                    + key + "}'", new int[]{lineNumber, startIndex - lineStartIndex},
-                                    new int[]{lineNumber, endIndex - lineStartIndex});
+                                    + key + "}'", new ScriptIndex(lineNumber, startIndex - lineStartIndex),
+                                    new ScriptIndex(lineNumber, endIndex - lineStartIndex));
                         }
                     }
                 }

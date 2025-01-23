@@ -19,7 +19,8 @@
 package io.siddhi.core.exception;
 
 import io.siddhi.core.config.SiddhiAppContext;
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
+import io.siddhi.query.api.ScriptIndex;
 
 /**
  * This exception can be thrown when an extension is not found. E.g. The class loader cannot find it.
@@ -45,33 +46,33 @@ public class ExtensionNotFoundException extends SiddhiAppCreationException {
         super(throwable);
     }
 
-    public ExtensionNotFoundException(String message, int[] queryContextStartIndex,
-                                      int[] queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
+    public ExtensionNotFoundException(String message, ScriptIndex queryContextStartIndex,
+                                      ScriptIndex queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
         super(message, queryContextStartIndex, queryContextEndIndex, siddhiAppName, siddhiAppString);
     }
 
-    public ExtensionNotFoundException(String message, SiddhiElement siddhiElement,
+    public ExtensionNotFoundException(String message, Element Element,
                                       SiddhiAppContext siddhiAppContext) {
-        super(message, siddhiElement, siddhiAppContext);
+        super(message, Element, siddhiAppContext);
     }
 
     public ExtensionNotFoundException(String message, Throwable throwable,
-                                      int[] queryContextStartIndex, int[] queryContextEndIndex) {
+                                      ScriptIndex queryContextStartIndex, ScriptIndex queryContextEndIndex) {
         super(message, throwable, queryContextStartIndex, queryContextEndIndex);
     }
 
-    public ExtensionNotFoundException(String message, int[] queryContextStartIndex, int[] queryContextEndIndex) {
+    public ExtensionNotFoundException(String message, ScriptIndex queryContextStartIndex, ScriptIndex queryContextEndIndex) {
         super(message, queryContextStartIndex, queryContextEndIndex);
     }
 
     public ExtensionNotFoundException(String message, Throwable throwable,
-                                      int[] queryContextStartIndex, int[] queryContextEndIndex,
+                                      ScriptIndex queryContextStartIndex, ScriptIndex queryContextEndIndex,
                                       SiddhiAppContext siddhiAppContext) {
         super(message, throwable, queryContextStartIndex, queryContextEndIndex, siddhiAppContext);
     }
 
     public ExtensionNotFoundException(String message, Throwable throwable,
-                                      int[] queryContextStartIndex, int[] queryContextEndIndex,
+                                      ScriptIndex queryContextStartIndex, ScriptIndex queryContextEndIndex,
                                       String siddhiAppName, String siddhiAppString) {
         super(message, throwable, queryContextStartIndex, queryContextEndIndex, siddhiAppName, siddhiAppString);
     }

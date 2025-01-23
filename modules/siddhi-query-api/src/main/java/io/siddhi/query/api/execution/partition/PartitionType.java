@@ -18,12 +18,12 @@
 
 package io.siddhi.query.api.execution.partition;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 
 /**
  * Type of Siddhi partition
  */
-public interface PartitionType extends SiddhiElement {
+public abstract class PartitionType extends Element {
 
-    String getStreamId();
+    public abstract String getStreamId();
 }

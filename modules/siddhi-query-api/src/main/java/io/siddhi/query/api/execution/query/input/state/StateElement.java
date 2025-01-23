@@ -17,11 +17,11 @@
  */
 package io.siddhi.query.api.execution.query.input.state;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 
 /**
  * Element representing states in pattern
  */
-public interface StateElement extends SiddhiElement {
+public abstract class StateElement extends Element {
 
 }

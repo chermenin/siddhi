@@ -17,7 +17,7 @@
  */
 package io.siddhi.query.api.execution.query.output.ratelimit;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 import io.siddhi.query.api.exception.UnsupportedAttributeTypeException;
 import io.siddhi.query.api.expression.constant.Constant;
 import io.siddhi.query.api.expression.constant.IntConstant;
@@ -27,11 +27,9 @@ import io.siddhi.query.api.expression.constant.TimeConstant;
 /**
  * Rate limiting of query output
  */
-public abstract class OutputRate implements SiddhiElement {
+public abstract class OutputRate extends Element {
 
     private static final long serialVersionUID = 1L;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
     public static EventOutputRate perEvents(Constant events) {
 
@@ -62,30 +60,6 @@ public abstract class OutputRate implements SiddhiElement {
     public static SnapshotOutputRate perSnapshot(LongConstant longConstant) {
 
         return new SnapshotOutputRate(longConstant.getValue());
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 
     /**

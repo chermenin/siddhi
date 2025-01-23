@@ -94,8 +94,8 @@ public class PartitionParser {
                     (!windowDefinitionMap.containsKey(entry.getKey()))) {
                 throw new SiddhiAppCreationException("Stream/window with name '" + entry.getKey() +
                         "' is not defined!",
-                        entry.getValue().getQueryContextStartIndex(),
-                        entry.getValue().getQueryContextEndIndex());
+                        entry.getValue().getContext().getStartIndex(),
+                        entry.getValue().getContext().getEndIndex());
             }
         }
     }

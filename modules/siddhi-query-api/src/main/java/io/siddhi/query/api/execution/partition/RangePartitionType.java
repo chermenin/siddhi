@@ -17,7 +17,7 @@
  */
 package io.siddhi.query.api.execution.partition;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 import io.siddhi.query.api.expression.Expression;
 
 import java.util.Arrays;
@@ -25,13 +25,11 @@ import java.util.Arrays;
 /**
  * Partition type supporting value ranges
  */
-public class RangePartitionType implements PartitionType {
+public class RangePartitionType extends PartitionType {
 
     private static final long serialVersionUID = 1L;
     private final String streamId;
     private final RangePartitionProperty[] rangePartitionProperties;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
     public RangePartitionType(String streamId, RangePartitionProperty[] rangePartitionProperties) {
 
@@ -89,40 +87,14 @@ public class RangePartitionType implements PartitionType {
         return result;
     }
 
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
-    }
-
     /**
      * Each range partition property
      */
-    public static class RangePartitionProperty implements SiddhiElement {
+    public static class RangePartitionProperty extends Element {
 
         private static final long serialVersionUID = 1L;
         private final String partitionKey;
         private final Expression condition;
-        private int[] queryContextStartIndex;
-        private int[] queryContextEndIndex;
 
         public RangePartitionProperty(String partitionKey, Expression condition) {
 
@@ -177,30 +149,6 @@ public class RangePartitionType implements PartitionType {
             int result = partitionKey.hashCode();
             result = 31 * result + condition.hashCode();
             return result;
-        }
-
-        @Override
-        public int[] getQueryContextStartIndex() {
-
-            return queryContextStartIndex;
-        }
-
-        @Override
-        public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-            queryContextStartIndex = lineAndColumn;
-        }
-
-        @Override
-        public int[] getQueryContextEndIndex() {
-
-            return queryContextEndIndex;
-        }
-
-        @Override
-        public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-            queryContextEndIndex = lineAndColumn;
         }
     }
 }

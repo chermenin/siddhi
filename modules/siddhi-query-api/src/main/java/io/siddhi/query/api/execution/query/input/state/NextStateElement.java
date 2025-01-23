@@ -20,13 +20,11 @@ package io.siddhi.query.api.execution.query.input.state;
 /**
  * Next state element used in patterns to link states
  */
-public class NextStateElement implements StateElement {
+public class NextStateElement extends StateElement {
 
     private static final long serialVersionUID = 1L;
     private StateElement stateElement;
     private StateElement nextStateElement;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
     public NextStateElement(StateElement stateElement, StateElement nextStateElement) {
 
@@ -81,30 +79,6 @@ public class NextStateElement implements StateElement {
         int result = stateElement != null ? stateElement.hashCode() : 0;
         result = 31 * result + (nextStateElement != null ? nextStateElement.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 }
 

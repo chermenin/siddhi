@@ -17,7 +17,7 @@
  */
 package io.siddhi.query.api.execution.query;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 import io.siddhi.query.api.execution.query.input.store.InputStore;
 import io.siddhi.query.api.execution.query.output.stream.OutputStream;
 import io.siddhi.query.api.execution.query.output.stream.UpdateSet;
@@ -29,7 +29,7 @@ import io.siddhi.query.api.expression.Expression;
  * This is deprecated use OnDemandQuery instead
  */
 @Deprecated
-public class StoreQuery implements SiddhiElement {
+public class StoreQuery extends Element {
 
     private OnDemandQuery onDemandQuery = new OnDemandQuery();
 
@@ -191,30 +191,6 @@ public class StoreQuery implements SiddhiElement {
     public int hashCode() {
 
         return onDemandQuery.hashCode();
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return onDemandQuery.getQueryContextStartIndex();
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        onDemandQuery.setQueryContextStartIndex(lineAndColumn);
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return onDemandQuery.getQueryContextEndIndex();
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        onDemandQuery.setQueryContextEndIndex(lineAndColumn);
     }
 
     /**

@@ -32,7 +32,7 @@ import io.siddhi.core.table.holder.ListEventHolder;
 import io.siddhi.core.table.holder.PrimaryKeyReferenceHolder;
 import io.siddhi.core.util.SiddhiConstants;
 import io.siddhi.query.api.annotation.Annotation;
-import io.siddhi.query.api.annotation.Element;
+import io.siddhi.query.api.annotation.AnnotationElement;
 import io.siddhi.query.api.definition.AbstractDefinition;
 import io.siddhi.query.api.definition.Attribute;
 import io.siddhi.query.api.exception.SiddhiAppValidationException;
@@ -78,25 +78,25 @@ public class EventHolderPasser {
                 throw new SiddhiAppValidationException(SiddhiConstants.ANNOTATION_INDEX + " annotation of " +
                         "in-memory table should contain only one index element, but found "
                         + indexAnnotation.getElements().size() + " element",
-                        indexAnnotation.getQueryContextStartIndex(),
-                        indexAnnotation.getQueryContextEndIndex());
+                        indexAnnotation.getContext().getStartIndex(),
+                        indexAnnotation.getContext().getEndIndex());
             } else if (indexAnnotation.getElements().size() > 1) {
                 throw new SiddhiAppValidationException(SiddhiConstants.ANNOTATION_INDEX + " annotation of the " +
                         "in-memory table should only contain one index element but found "
                         + indexAnnotation.getElements().size() + " elements. To use multiple indexes, " +
                         "define multiple '@index(<index key>)' annotations with one index element " +
                         "per each index key",
-                        indexAnnotation.getQueryContextStartIndex(),
-                        indexAnnotation.getQueryContextEndIndex());
+                        indexAnnotation.getContext().getStartIndex(),
+                        indexAnnotation.getContext().getEndIndex());
             }
-            for (Element element : indexAnnotation.getElements()) {
+            for (AnnotationElement element : indexAnnotation.getElements()) {
                 Integer previousValue = indexMetaData.put(element.getValue().trim(), tableDefinition
                         .getAttributePosition(element.getValue().trim()));
                 if (previousValue != null) {
                     throw new SiddhiAppValidationException("Multiple " + SiddhiConstants.ANNOTATION_INDEX + " " +
                             "annotations defined with same attribute '" + element.getValue().trim() + "', at '" +
-                            tableDefinition.getId() + "'", indexAnnotation.getQueryContextStartIndex(),
-                            indexAnnotation.getQueryContextEndIndex());
+                            tableDefinition.getId() + "'", indexAnnotation.getContext().getStartIndex(),
+                            indexAnnotation.getContext().getEndIndex());
                 }
             }
         }

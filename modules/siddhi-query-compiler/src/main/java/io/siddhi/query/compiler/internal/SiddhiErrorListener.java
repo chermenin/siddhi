@@ -17,6 +17,7 @@
  */
 package io.siddhi.query.compiler.internal;
 
+import io.siddhi.query.api.ScriptIndex;
 import io.siddhi.query.compiler.exception.SiddhiParserException;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.RecognitionException;
@@ -34,7 +35,7 @@ public class SiddhiErrorListener extends BaseErrorListener {
                             int line, int charPositionInLine,
                             String msg, RecognitionException e) {
 
-        throw new SiddhiParserException("Syntax error in SiddhiQL, " + msg + ".", new int[]{line, 0},
-                new int[]{line, charPositionInLine});
+        throw new SiddhiParserException("Syntax error in SiddhiQL, " + msg + ".", new ScriptIndex(line, 0),
+                new ScriptIndex(line, charPositionInLine));
     }
 }

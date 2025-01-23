@@ -17,19 +17,23 @@
  */
 package io.siddhi.query.api.exception;
 
+import io.siddhi.query.api.ScriptIndex;
+
 /**
  * Exception thrown when duplicate attributes are defined in a definition
  */
 public class DuplicateAnnotationException extends SiddhiAppValidationException {
 
-    public DuplicateAnnotationException(String message, int[] queryContextStartIndex, int[] queryContextEndIndex) {
+    public DuplicateAnnotationException(String message) {
+        super(message);
+    }
 
+    public DuplicateAnnotationException(String message, ScriptIndex queryContextStartIndex, ScriptIndex queryContextEndIndex) {
         super(message, queryContextStartIndex, queryContextEndIndex);
     }
 
-    public DuplicateAnnotationException(String message, Throwable throwable, int[] queryContextStartIndex,
-                                        int[] queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
-
+    public DuplicateAnnotationException(String message, Throwable throwable, ScriptIndex queryContextStartIndex,
+                                        ScriptIndex queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
         super(message, throwable, queryContextStartIndex, queryContextEndIndex, siddhiAppName, siddhiAppString);
     }
 }

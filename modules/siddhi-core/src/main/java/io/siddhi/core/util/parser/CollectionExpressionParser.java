@@ -890,22 +890,22 @@ public class CollectionExpressionParser {
                     throw new SiddhiAppCreationException("Only attribute EQUAL " +
                             "comparision supported for multiple primary key optimization, " +
                             "but found  '" + attributeCollectionExpression.getClass() + "'",
-                            collectionExpression.getExpression().getQueryContextStartIndex(),
-                            collectionExpression.getExpression().getQueryContextEndIndex());
+                            collectionExpression.getExpression().getContext().getStartIndex(),
+                            collectionExpression.getExpression().getContext().getEndIndex());
                 }
             } else {
                 throw new SiddhiAppCreationException("Only '" + Compare.Operator.EQUAL + "' supported for multiple " +
                         "primary key for multiple primary key optimization, but found '" +
                         ((CompareCollectionExpression) collectionExpression).getOperator() + "'",
-                        collectionExpression.getExpression().getQueryContextStartIndex(),
-                        collectionExpression.getExpression().getQueryContextEndIndex());
+                        collectionExpression.getExpression().getContext().getStartIndex(),
+                        collectionExpression.getExpression().getContext().getEndIndex());
             }
         } else { //Attribute Collection
             throw new SiddhiAppCreationException("Only 'AND' and '" + Compare.Operator.EQUAL + "' operators are " +
                     "supported for multiple primary key optimization, but found '" +
                     ((CompareCollectionExpression) collectionExpression).getOperator() + "'",
-                    collectionExpression.getExpression().getQueryContextStartIndex(),
-                    collectionExpression.getExpression().getQueryContextEndIndex());
+                    collectionExpression.getExpression().getContext().getStartIndex(),
+                    collectionExpression.getExpression().getContext().getEndIndex());
         }
 
     }

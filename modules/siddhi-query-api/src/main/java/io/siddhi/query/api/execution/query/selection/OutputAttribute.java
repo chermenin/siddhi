@@ -17,20 +17,18 @@
  */
 package io.siddhi.query.api.execution.query.selection;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 import io.siddhi.query.api.expression.Expression;
 import io.siddhi.query.api.expression.Variable;
 
 /**
  * Query output stream attributes
  */
-public class OutputAttribute implements SiddhiElement {
+public class OutputAttribute extends Element {
 
     private static final long serialVersionUID = 1L;
     private String rename;
     private Expression expression;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
     public OutputAttribute(String rename, Expression expression) {
 
@@ -91,29 +89,5 @@ public class OutputAttribute implements SiddhiElement {
         int result = rename != null ? rename.hashCode() : 0;
         result = 31 * result + (expression != null ? expression.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 }

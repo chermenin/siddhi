@@ -436,7 +436,7 @@ public class AggregationRuntime implements MemoryCalculable {
                 throw new SiddhiAppCreationException(
                         "Query " + siddhiQueryContext.getName() + "'s per value expected a string but found "
                                 + perExpressionExecutor.getReturnType(),
-                        per.getQueryContextStartIndex(), per.getQueryContextEndIndex());
+                        per.getContext().getStartIndex(), per.getContext().getEndIndex());
             }
             // Additional Per time function verification at compile time if it is a constant
             if (perExpressionExecutor instanceof ConstantExpressionExecutor) {

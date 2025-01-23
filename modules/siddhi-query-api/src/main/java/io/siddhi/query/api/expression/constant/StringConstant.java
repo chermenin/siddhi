@@ -22,7 +22,7 @@ import io.siddhi.query.api.expression.Expression;
 /**
  * String constant {@link Expression}
  */
-public class StringConstant extends Expression implements Constant {
+public class StringConstant extends Constant {
 
     private static final long serialVersionUID = 1L;
     private String value;

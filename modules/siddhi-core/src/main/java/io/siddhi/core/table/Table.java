@@ -48,7 +48,7 @@ import io.siddhi.core.util.statistics.MemoryCalculable;
 import io.siddhi.core.util.statistics.ThroughputTracker;
 import io.siddhi.core.util.statistics.metrics.Level;
 import io.siddhi.core.util.transport.BackoffRetryCounter;
-import io.siddhi.query.api.annotation.Element;
+import io.siddhi.query.api.annotation.AnnotationElement;
 import io.siddhi.query.api.definition.Attribute;
 import io.siddhi.query.api.definition.TableDefinition;
 import io.siddhi.query.api.execution.query.output.stream.UpdateSet;
@@ -103,7 +103,7 @@ public abstract class Table implements FindableProcessor, MemoryCalculable {
         this.scheduledExecutorService = siddhiAppContext.getScheduledExecutorService();
         this.siddhiAppContext = siddhiAppContext;
         this.recordTableHandler = recordTableHandler;
-        Element onErrorElement = getAnnotationElement(ANNOTATION_STORE, ANNOTATION_ELEMENT_ON_ERROR,
+        AnnotationElement onErrorElement = getAnnotationElement(ANNOTATION_STORE, ANNOTATION_ELEMENT_ON_ERROR,
                 tableDefinition.getAnnotations());
         if (onErrorElement != null) {
             this.onErrorAction = OnErrorAction.valueOf(onErrorElement.getValue());

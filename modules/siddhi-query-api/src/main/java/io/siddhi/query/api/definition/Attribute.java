@@ -17,18 +17,16 @@
  */
 package io.siddhi.query.api.definition;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 
 /**
  * Attributes of the Siddhi Definitions
  */
-public class Attribute implements SiddhiElement {
+public class Attribute extends Element {
 
     private static final long serialVersionUID = 1L;
     private String name;
     private Type type;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
     public Attribute(String name, Type type) {
 
@@ -83,30 +81,6 @@ public class Attribute implements SiddhiElement {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 
     /**

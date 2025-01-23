@@ -17,6 +17,7 @@
  */
 package io.siddhi.query.api.exception;
 
+import io.siddhi.query.api.ScriptIndex;
 import io.siddhi.query.api.util.ExceptionUtil;
 
 /**
@@ -25,8 +26,8 @@ import io.siddhi.query.api.util.ExceptionUtil;
 public class SiddhiAppValidationException extends RuntimeException implements SiddhiAppContextException {
 
     private String message;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
+    private ScriptIndex queryContextStartIndex;
+    private ScriptIndex queryContextEndIndex;
     private String siddhiAppName = null;
     private String siddhiAppPortion = null;
 
@@ -47,40 +48,40 @@ public class SiddhiAppValidationException extends RuntimeException implements Si
         super(throwable);
     }
 
-    public SiddhiAppValidationException(String message, int[] queryContextStartIndex,
-                                        int[] queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
+    public SiddhiAppValidationException(String message, ScriptIndex queryContextStartIndex,
+                                        ScriptIndex queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
 
         super(message);
         this.message = message;
         setQueryContextIndexIfAbsent(queryContextStartIndex, queryContextEndIndex, siddhiAppName, siddhiAppString);
     }
 
-    public SiddhiAppValidationException(String message, Throwable throwable, int[] queryContextStartIndex,
-                                        int[] queryContextEndIndex) {
+    public SiddhiAppValidationException(String message, Throwable throwable, ScriptIndex queryContextStartIndex,
+                                        ScriptIndex queryContextEndIndex) {
 
         super(message, throwable);
         this.message = message;
         setQueryContextIndexIfAbsent(queryContextStartIndex, queryContextEndIndex, siddhiAppName, null);
     }
 
-    public SiddhiAppValidationException(String message, int[] queryContextStartIndex,
-                                        int[] queryContextEndIndex) {
+    public SiddhiAppValidationException(String message, ScriptIndex queryContextStartIndex,
+                                        ScriptIndex queryContextEndIndex) {
 
         super(message);
         this.message = message;
         setQueryContextIndexIfAbsent(queryContextStartIndex, queryContextEndIndex, siddhiAppName, null);
     }
 
-    public SiddhiAppValidationException(String message, Throwable throwable, int[] queryContextStartIndex,
-                                        int[] queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
+    public SiddhiAppValidationException(String message, Throwable throwable, ScriptIndex queryContextStartIndex,
+                                        ScriptIndex queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
 
         super(message, throwable);
         this.message = message;
         setQueryContextIndexIfAbsent(queryContextStartIndex, queryContextEndIndex, siddhiAppName, siddhiAppString);
     }
 
-    public void setQueryContextIndexIfAbsent(int[] queryContextStartIndex,
-                                             int[] queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
+    public void setQueryContextIndexIfAbsent(ScriptIndex queryContextStartIndex,
+                                             ScriptIndex queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
 
         if (this.siddhiAppName == null) {
             this.siddhiAppName = siddhiAppName;
@@ -97,12 +98,12 @@ public class SiddhiAppValidationException extends RuntimeException implements Si
         }
     }
 
-    public int[] getQueryContextStartIndex() {
+    public ScriptIndex getQueryContextStartIndex() {
 
         return queryContextStartIndex;
     }
 
-    public int[] getQueryContextEndIndex() {
+    public ScriptIndex getQueryContextEndIndex() {
 
         return queryContextEndIndex;
     }

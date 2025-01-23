@@ -103,8 +103,7 @@ public class OutputParser {
                 tableMetaStreamEvent.addOutputData(attribute);
                 matchingTableDefinition.attribute(attribute.getName(), attribute.getType());
             }
-            matchingTableDefinition.setQueryContextStartIndex(outStream.getQueryContextStartIndex());
-            matchingTableDefinition.setQueryContextEndIndex(outStream.getQueryContextEndIndex());
+            matchingTableDefinition.setContext(outStream.getContext());
             tableMetaStreamEvent.addInputDefinition(matchingTableDefinition);
 
             streamEventFactory = new StreamEventFactory(tableMetaStreamEvent);
@@ -142,8 +141,8 @@ public class OutputParser {
                         for (Attribute attribute : outputStreamDefinition.getAttributeList()) {
                             if (!tableDefinition.getAttributeList().contains(attribute)) {
                                 throw new SiddhiAppCreationException("Attribute " + attribute + " does not exist on " +
-                                        "Event Table " + tableDefinition, outStream.getQueryContextStartIndex(),
-                                        outStream.getQueryContextEndIndex());
+                                        "Event Table " + tableDefinition, outStream.getContext().getStartIndex(),
+                                        outStream.getContext().getEndIndex());
                             }
                         }
                     }
@@ -154,8 +153,8 @@ public class OutputParser {
                     for (Attribute attribute : outputStreamDefinition.getAttributeList()) {
                         if (!tableDefinition.getAttributeList().contains(attribute)) {
                             throw new SiddhiAppCreationException("Attribute " + attribute + " does not exist on " +
-                                    "Event Table " + tableDefinition, outStream.getQueryContextStartIndex(),
-                                    outStream.getQueryContextEndIndex());
+                                    "Event Table " + tableDefinition, outStream.getContext().getStartIndex(),
+                                    outStream.getContext().getEndIndex());
                         }
                     }
                 }
@@ -242,13 +241,13 @@ public class OutputParser {
                 }
             } else {
                 throw new SiddhiAppCreationException("Event table with id :" + id + " does not exist",
-                        outStream.getQueryContextStartIndex(),
-                        outStream.getQueryContextEndIndex());
+                        outStream.getContext().getStartIndex(),
+                        outStream.getContext().getEndIndex());
             }
         } else {
             throw new SiddhiAppCreationException(outStream.getClass().getName() + " not supported",
-                    outStream.getQueryContextStartIndex(),
-                    outStream.getQueryContextEndIndex());
+                    outStream.getContext().getStartIndex(),
+                    outStream.getContext().getEndIndex());
         }
 
     }
@@ -275,7 +274,7 @@ public class OutputParser {
 
         } else {
             throw new SiddhiAppCreationException(outStream.getClass().getName() + " not supported",
-                    outStream.getQueryContextStartIndex(), outStream.getQueryContextEndIndex());
+                    outStream.getContext().getStartIndex(), outStream.getContext().getEndIndex());
         }
     }
 

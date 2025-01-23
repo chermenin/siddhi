@@ -17,13 +17,13 @@
  */
 package io.siddhi.query.api.execution.query.input.handler;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 import io.siddhi.query.api.expression.Expression;
 
 /**
  * Stream handler that does manipulations on stream in Siddhi queries
  */
-public interface StreamHandler extends SiddhiElement {
+public abstract class StreamHandler extends Element {
 
-    public Expression[] getParameters();
+    public abstract Expression[] getParameters();
 }

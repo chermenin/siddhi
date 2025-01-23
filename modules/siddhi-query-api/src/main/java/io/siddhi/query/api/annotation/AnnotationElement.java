@@ -17,20 +17,20 @@
  */
 package io.siddhi.query.api.annotation;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
+
+import java.util.Objects;
 
 /**
  * Annotation element
  */
-public class Element implements SiddhiElement {
+public class AnnotationElement extends Element {
 
     private static final long serialVersionUID = 1L;
     private final String key;
     private final String value;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
-    public Element(String key, String value) {
+    public AnnotationElement(String key, String value) {
 
         this.key = key;
         this.value = value;
@@ -62,20 +62,16 @@ public class Element implements SiddhiElement {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Element)) {
+        if (!(o instanceof AnnotationElement)) {
             return false;
         }
 
-        Element element = (Element) o;
+        AnnotationElement element = (AnnotationElement) o;
 
-        if (key != null ? !key.equals(element.key) : element.key != null) {
+        if (!Objects.equals(key, element.key)) {
             return false;
         }
-        if (value != null ? !value.equals(element.value) : element.value != null) {
-            return false;
-        }
-
-        return true;
+        return Objects.equals(value, element.value);
     }
 
     @Override
@@ -84,29 +80,5 @@ public class Element implements SiddhiElement {
         int result = key != null ? key.hashCode() : 0;
         result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 }

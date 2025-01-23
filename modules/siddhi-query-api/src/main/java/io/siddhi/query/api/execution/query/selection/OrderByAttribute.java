@@ -17,19 +17,17 @@
  */
 package io.siddhi.query.api.execution.query.selection;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 import io.siddhi.query.api.expression.Variable;
 
 /**
  * Query order by attribute
  */
-public class OrderByAttribute implements SiddhiElement {
+public class OrderByAttribute extends Element {
 
     private static final long serialVersionUID = 1L;
     private Order order = Order.ASC;
     private Variable variable;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
     public OrderByAttribute(Variable variable, Order order) {
 
@@ -50,30 +48,6 @@ public class OrderByAttribute implements SiddhiElement {
     public Variable getVariable() {
 
         return variable;
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 
     @Override

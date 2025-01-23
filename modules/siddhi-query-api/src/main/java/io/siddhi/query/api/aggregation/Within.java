@@ -17,7 +17,7 @@
  */
 package io.siddhi.query.api.aggregation;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 import io.siddhi.query.api.expression.Expression;
 
 import java.util.ArrayList;
@@ -26,12 +26,10 @@ import java.util.List;
 /**
  * With time period for Incremental Aggregation.
  */
-public class Within implements SiddhiElement {
+public class Within extends Element {
 
     private static final long serialVersionUID = 1L;
     private List<Expression> timeRange = new ArrayList<>(2);
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
     private Within(Expression start, Expression end) {
 
@@ -86,29 +84,5 @@ public class Within implements SiddhiElement {
         return "Within{" +
                 "timeRange=" + timeRange +
                 '}';
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 }

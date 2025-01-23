@@ -17,7 +17,7 @@
  */
 package io.siddhi.query.api.execution.query;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 import io.siddhi.query.api.execution.query.input.store.InputStore;
 import io.siddhi.query.api.execution.query.output.stream.DeleteStream;
 import io.siddhi.query.api.execution.query.output.stream.OutputStream;
@@ -33,14 +33,12 @@ import static io.siddhi.query.api.execution.query.output.stream.OutputStream.Out
 /**
  * This class keep information of on-demand query.
  */
-public class OnDemandQuery implements SiddhiElement {
+public class OnDemandQuery extends Element {
 
     private static final long serialVersionUID = 1L;
     private InputStore inputStore;
     private Selector selector = new Selector();
     private OutputStream outputStream = new ReturnStream(CURRENT_EVENTS);
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
     private OnDemandQueryType type;
 
     /**
@@ -214,30 +212,6 @@ public class OnDemandQuery implements SiddhiElement {
         result = 31 * result + (selector != null ? selector.hashCode() : 0);
         result = 31 * result + (outputStream != null ? outputStream.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 
     /**

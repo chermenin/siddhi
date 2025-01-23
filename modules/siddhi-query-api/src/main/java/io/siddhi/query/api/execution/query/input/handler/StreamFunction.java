@@ -17,7 +17,7 @@
  */
 package io.siddhi.query.api.execution.query.input.handler;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 import io.siddhi.query.api.expression.Expression;
 import io.siddhi.query.api.extension.Extension;
 
@@ -26,14 +26,12 @@ import java.util.Arrays;
 /**
  * Siddhi stream function
  */
-public class StreamFunction implements StreamHandler, Extension, SiddhiElement {
+public class StreamFunction extends StreamHandler implements Extension {
 
     private static final long serialVersionUID = 1L;
     private String namespace = "";
     private String function;
     private Expression[] parameters;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
     public StreamFunction(String namespace, String function, Expression[] parameters) {
 
@@ -115,29 +113,5 @@ public class StreamFunction implements StreamHandler, Extension, SiddhiElement {
         result = 31 * result + (function != null ? function.hashCode() : 0);
         result = 31 * result + Arrays.hashCode(parameters);
         return result;
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 }

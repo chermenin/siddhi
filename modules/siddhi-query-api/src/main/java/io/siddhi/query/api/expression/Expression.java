@@ -17,7 +17,7 @@
  */
 package io.siddhi.query.api.expression;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 import io.siddhi.query.api.aggregation.TimePeriod;
 import io.siddhi.query.api.exception.SiddhiAppValidationException;
 import io.siddhi.query.api.expression.condition.And;
@@ -45,11 +45,9 @@ import java.util.regex.Pattern;
 /**
  * Siddhi expression
  */
-public abstract class Expression implements SiddhiElement {
+public abstract class Expression extends Element {
 
     private static final long serialVersionUID = 1L;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
     public static StringConstant value(String value) {
 
@@ -181,30 +179,6 @@ public abstract class Expression implements SiddhiElement {
     public static Expression isNullInnerStream(String streamId, int streamIndex) {
 
         return new IsNull(streamId, streamIndex, true);
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 
     /**

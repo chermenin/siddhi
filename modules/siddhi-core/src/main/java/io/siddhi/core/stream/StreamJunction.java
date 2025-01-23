@@ -116,8 +116,8 @@ public class StreamJunction implements EventBufferHolder {
                     if (workers <= 0) {
                         throw new SiddhiAppCreationException("Annotation element '" +
                                 SiddhiConstants.ANNOTATION_ELEMENT_WORKERS + "' cannot be negative or zero, " +
-                                "but found, '" + workers + "'.", asyncAnnotation.getQueryContextStartIndex(),
-                                asyncAnnotation.getQueryContextEndIndex(), siddhiAppContext.getName(),
+                                "but found, '" + workers + "'.", asyncAnnotation.getContext().getStartIndex(),
+                                asyncAnnotation.getContext().getEndIndex(), siddhiAppContext.getName(),
                                 siddhiAppContext.getSiddhiAppString());
                     }
                 }
@@ -127,8 +127,8 @@ public class StreamJunction implements EventBufferHolder {
                     if (batchSize <= 0) {
                         throw new SiddhiAppCreationException("Annotation element '" +
                                 SiddhiConstants.ANNOTATION_ELEMENT_MAX_BATCH_SIZE + "' cannot be negative or zero, " +
-                                "but found, '" + batchSize + "'.", asyncAnnotation.getQueryContextStartIndex(),
-                                asyncAnnotation.getQueryContextEndIndex(), siddhiAppContext.getName(),
+                                "but found, '" + batchSize + "'.", asyncAnnotation.getContext().getStartIndex(),
+                                asyncAnnotation.getContext().getEndIndex(), siddhiAppContext.getName(),
                                 siddhiAppContext.getSiddhiAppString());
                     }
                 }

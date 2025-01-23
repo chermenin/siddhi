@@ -18,7 +18,7 @@
 
 package io.siddhi.core.util.statistics;
 
-import io.siddhi.query.api.annotation.Element;
+import io.siddhi.query.api.annotation.AnnotationElement;
 
 import java.util.List;
 
@@ -35,6 +35,6 @@ public interface StatisticsTrackerFactory {
 
     MemoryUsageTracker createMemoryUsageTracker(StatisticsManager statisticsManager);
 
-    StatisticsManager createStatisticsManager(String prefix, String siddhiAppName, List<Element> elements);
+    StatisticsManager createStatisticsManager(String prefix, String siddhiAppName, List<AnnotationElement> elements);
 
 }

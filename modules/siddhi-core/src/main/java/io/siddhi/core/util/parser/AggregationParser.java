@@ -77,7 +77,7 @@ import io.siddhi.core.util.statistics.ThroughputTracker;
 import io.siddhi.core.window.Window;
 import io.siddhi.query.api.aggregation.TimePeriod;
 import io.siddhi.query.api.annotation.Annotation;
-import io.siddhi.query.api.annotation.Element;
+import io.siddhi.query.api.annotation.AnnotationElement;
 import io.siddhi.query.api.definition.AbstractDefinition;
 import io.siddhi.query.api.definition.AggregationDefinition;
 import io.siddhi.query.api.definition.Attribute;
@@ -207,22 +207,21 @@ public class AggregationParser {
             throw new SiddhiAppCreationException(
                     "Aggregation Definition '" + aggregationDefinition.getId() + "'s timePeriod is null. " +
                             "Hence, can't create the siddhi app '" + siddhiAppContext.getName() + "'",
-                    aggregationDefinition.getQueryContextStartIndex(), aggregationDefinition.getQueryContextEndIndex());
+                    aggregationDefinition.getContext().getStartIndex(), aggregationDefinition.getContext().getEndIndex());
         }
         if (aggregationDefinition.getSelector() == null) {
             throw new SiddhiAppCreationException(
                     "Aggregation Definition '" + aggregationDefinition.getId() + "'s selection is not defined. " +
                             "Hence, can't create the siddhi app '" + siddhiAppContext.getName() + "'",
-                    aggregationDefinition.getQueryContextStartIndex(), aggregationDefinition.getQueryContextEndIndex());
+                    aggregationDefinition.getContext().getStartIndex(), aggregationDefinition.getContext().getEndIndex());
         }
         if (streamDefinitionMap.get(aggregationDefinition.getBasicSingleInputStream().getStreamId()) == null) {
             throw new SiddhiAppCreationException("Stream " + aggregationDefinition.getBasicSingleInputStream().
                     getStreamId() + " has not been defined");
         }
 
-        //Check if the user defined primary keys exists for @store annotation on aggregation if yes, an error is
-        //is thrown
-        Element userDefinedPrimaryKey = AnnotationHelper.getAnnotationElement(
+        //Check if the user defined primary keys exists for @store annotation on aggregation if yes, an error is thrown
+        AnnotationElement userDefinedPrimaryKey = AnnotationHelper.getAnnotationElement(
                 SiddhiConstants.ANNOTATION_PRIMARY_KEY, null, aggregationDefinition.getAnnotations());
         if (userDefinedPrimaryKey != null) {
             throw new SiddhiAppCreationException("Aggregation Tables have predefined primary key, but found '" +
@@ -322,8 +321,7 @@ public class AggregationParser {
 
             // Creating an intermediate stream with aggregated stream and above extracted output variables
             StreamDefinition incomingOutputStreamDefinition = StreamDefinition.id(aggregatorName + "_intermediate");
-            incomingOutputStreamDefinition.setQueryContextStartIndex(aggregationDefinition.getQueryContextStartIndex());
-            incomingOutputStreamDefinition.setQueryContextEndIndex(aggregationDefinition.getQueryContextEndIndex());
+            incomingOutputStreamDefinition.setContext(aggregationDefinition.getContext());
             MetaStreamEvent processedMetaStreamEvent = new MetaStreamEvent();
             for (Attribute attribute : incomingMetaStreamEvent.getOutputData()) {
                 incomingOutputStreamDefinition.attribute(attribute.getName(), attribute.getType());
@@ -769,8 +767,8 @@ public class AggregationParser {
                         "Aggregation Definition '" + aggregationDefinition.getId() + "'s timestamp attribute expects " +
                                 "long or string, but found " + externalTimestampExecutor.getReturnType() + ". Hence, can't " +
                                 "create the siddhi app '" + siddhiQueryContext.getSiddhiAppContext().getName() + "'",
-                        externalTimestampExpression.getQueryContextStartIndex(),
-                        externalTimestampExpression.getQueryContextEndIndex());
+                        externalTimestampExpression.getContext().getStartIndex(),
+                        externalTimestampExpression.getContext().getEndIndex());
             }
 
             Attribute externalTimestampAttribute = new Attribute(AGG_EXTERNAL_TIMESTAMP_COL, Attribute.Type.LONG);
@@ -825,8 +823,8 @@ public class AggregationParser {
                     } catch (SiddhiAppCreationException e) {
                         throw new SiddhiAppCreationException("'" + ((AttributeFunction) expression).getName() +
                                 "' is neither a incremental attribute aggregator extension or a function" +
-                                " extension", expression.getQueryContextStartIndex(),
-                                expression.getQueryContextEndIndex());
+                                " extension", expression.getContext().getStartIndex(),
+                                expression.getContext().getEndIndex());
                     }
                 }
                 if (incrementalAggregator != null) {
@@ -849,8 +847,8 @@ public class AggregationParser {
                     if (groupByAttribute == null) {
                         throw new SiddhiAppCreationException("Expected GroupBy attribute '" +
                                 ((Variable) expression).getAttributeName() + "' not used in aggregation '" +
-                                siddhiQueryContext.getName() + "' processing.", expression.getQueryContextStartIndex(),
-                                expression.getQueryContextEndIndex());
+                                siddhiQueryContext.getName() + "' processing.", expression.getContext().getStartIndex(),
+                                expression.getContext().getEndIndex());
                     }
                     aggregationDefinition.getAttributeList().add(
                             new Attribute(outputAttribute.getRename(), groupByAttribute.getType()));
@@ -939,14 +937,14 @@ public class AggregationParser {
             if (attributeFunction.getParameters().length != 1) {
                 throw new SiddhiAppCreationException("Incremental aggregator requires only one parameter. "
                         + "Found " + attributeFunction.getParameters().length,
-                        attributeFunction.getQueryContextStartIndex(), attributeFunction.getQueryContextEndIndex());
+                        attributeFunction.getContext().getStartIndex(), attributeFunction.getContext().getEndIndex());
             }
             if (!(attributeFunction.getParameters()[0] instanceof Variable)) {
                 throw new SiddhiAppCreationException("Incremental aggregator expected a variable. " +
                         "However a parameter of type " + attributeFunction.getParameters()[0].getClass().getTypeName()
                         + " was found",
-                        attributeFunction.getParameters()[0].getQueryContextStartIndex(),
-                        attributeFunction.getParameters()[0].getQueryContextEndIndex());
+                        attributeFunction.getParameters()[0].getContext().getStartIndex(),
+                        attributeFunction.getParameters()[0].getContext().getEndIndex());
             }
             attributeName = ((Variable) attributeFunction.getParameters()[0]).getAttributeName();
             attributeType = lastInputStreamDefinition.getAttributeType(attributeName);
@@ -964,14 +962,14 @@ public class AggregationParser {
             throw new SiddhiAppCreationException("Number of baseAggregators '" +
                     baseAggregators.length + "' and baseAttributes '" +
                     baseAttributes.length + "' is not equal for '" + attributeFunction + "'",
-                    attributeFunction.getQueryContextStartIndex(), attributeFunction.getQueryContextEndIndex());
+                    attributeFunction.getContext().getStartIndex(), attributeFunction.getContext().getEndIndex());
         }
         if (baseAttributeInitialValues.length != baseAggregators.length) {
             throw new SiddhiAppCreationException("Number of baseAggregators '" +
                     baseAggregators.length + "' and baseAttributeInitialValues '" +
                     baseAttributeInitialValues.length + "' is not equal for '" +
                     attributeFunction + "'",
-                    attributeFunction.getQueryContextStartIndex(), attributeFunction.getQueryContextEndIndex());
+                    attributeFunction.getContext().getStartIndex(), attributeFunction.getContext().getEndIndex());
         }
     }
 

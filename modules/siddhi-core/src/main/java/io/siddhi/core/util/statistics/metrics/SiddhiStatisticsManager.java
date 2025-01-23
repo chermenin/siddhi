@@ -24,7 +24,7 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Reporter;
 import com.codahale.metrics.ScheduledReporter;
 import io.siddhi.core.util.statistics.StatisticsManager;
-import io.siddhi.query.api.annotation.Element;
+import io.siddhi.query.api.annotation.AnnotationElement;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -38,8 +38,8 @@ public class SiddhiStatisticsManager implements StatisticsManager {
     private String reporterName = "console";
     private int interval = 60;
 
-    public SiddhiStatisticsManager(List<Element> elements) {
-        for (Element element : elements) {
+    public SiddhiStatisticsManager(List<AnnotationElement> elements) {
+        for (AnnotationElement element : elements) {
             if ("reporter".equals(element.getKey())) {
                 reporterName = element.getValue();
             } else if ("interval".equals(element.getKey())) {

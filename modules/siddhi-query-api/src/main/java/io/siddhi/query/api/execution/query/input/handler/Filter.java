@@ -22,12 +22,10 @@ import io.siddhi.query.api.expression.Expression;
 /**
  * Siddhi query filter
  */
-public class Filter implements StreamHandler {
+public class Filter extends StreamHandler {
 
     private static final long serialVersionUID = 1L;
     private Expression filterExpression;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
     public Filter(Expression filterExpression) {
 
@@ -71,29 +69,5 @@ public class Filter implements StreamHandler {
     public Expression[] getParameters() {
 
         return new Expression[]{filterExpression};
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 }

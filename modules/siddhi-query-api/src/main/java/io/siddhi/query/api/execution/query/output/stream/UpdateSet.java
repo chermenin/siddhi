@@ -18,7 +18,7 @@
 
 package io.siddhi.query.api.execution.query.output.stream;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 import io.siddhi.query.api.expression.Expression;
 import io.siddhi.query.api.expression.Variable;
 
@@ -28,12 +28,10 @@ import java.util.List;
 /**
  * Updating UpdateSet Attribute for UpdateStream
  */
-public class UpdateSet implements SiddhiElement {
+public class UpdateSet extends Element {
 
     private static final long serialVersionUID = 1L;
     private List<SetAttribute> setAttributeList = new ArrayList<>();
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
     public UpdateSet set(Variable tableVariable, Expression assignmentExpression) {
 
@@ -76,40 +74,14 @@ public class UpdateSet implements SiddhiElement {
                 '}';
     }
 
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
-    }
-
     /**
      * Attribute assignment for updates
      */
-    public static class SetAttribute implements SiddhiElement {
+    public static class SetAttribute extends Element {
 
         private static final long serialVersionUID = 1L;
         private Variable tableVariable;
         private Expression assignmentExpression;
-        private int[] queryContextStartIndex;
-        private int[] queryContextEndIndex;
 
         public SetAttribute(Variable tableVariable, Expression assignmentExpression) {
 
@@ -161,30 +133,6 @@ public class UpdateSet implements SiddhiElement {
                     "tableVariable=" + tableVariable +
                     ", assignmentExpression=" + assignmentExpression +
                     '}';
-        }
-
-        @Override
-        public int[] getQueryContextStartIndex() {
-
-            return queryContextStartIndex;
-        }
-
-        @Override
-        public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-            queryContextStartIndex = lineAndColumn;
-        }
-
-        @Override
-        public int[] getQueryContextEndIndex() {
-
-            return queryContextEndIndex;
-        }
-
-        @Override
-        public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-            queryContextEndIndex = lineAndColumn;
         }
     }
 }

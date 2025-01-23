@@ -36,7 +36,7 @@ import io.siddhi.core.util.timestamp.TimestampGeneratorImpl;
 import io.siddhi.core.window.Window;
 import io.siddhi.query.api.SiddhiApp;
 import io.siddhi.query.api.annotation.Annotation;
-import io.siddhi.query.api.annotation.Element;
+import io.siddhi.query.api.annotation.AnnotationElement;
 import io.siddhi.query.api.definition.AggregationDefinition;
 import io.siddhi.query.api.definition.Attribute;
 import io.siddhi.query.api.definition.FunctionDefinition;
@@ -89,7 +89,7 @@ public class SiddhiAppParser {
         siddhiAppContext.setSiddhiApp(siddhiApp);
 
         try {
-            Element element = AnnotationHelper.getAnnotationElement(SiddhiConstants.ANNOTATION_NAME, null,
+            AnnotationElement element = AnnotationHelper.getAnnotationElement(SiddhiConstants.ANNOTATION_NAME, null,
                     siddhiApp.getAnnotations());
             if (element != null) {
                 siddhiAppContext.setName(element.getValue());
@@ -108,13 +108,13 @@ public class SiddhiAppParser {
             if (annotation != null) {
                 throw new SiddhiAppCreationException("@Async not supported in SiddhiApp level, " +
                         "instead use @Async with streams",
-                        annotation.getQueryContextStartIndex(), annotation.getQueryContextEndIndex());
+                        annotation.getContext().getStartIndex(), annotation.getContext().getEndIndex());
             }
 
             annotation = AnnotationHelper.getAnnotation(SiddhiConstants.ANNOTATION_STATISTICS,
                     siddhiApp.getAnnotations());
 
-            List<Element> statisticsElements = new ArrayList<>();
+            List<AnnotationElement> statisticsElements = new ArrayList<>();
             if (annotation != null) {
                 statisticsElements = annotation.getElements();
             }
@@ -128,14 +128,14 @@ public class SiddhiAppParser {
                                 statisticsElements));
             }
 
-            Element statStateEnableElement = AnnotationHelper.getAnnotationElement(
+            AnnotationElement statStateEnableElement = AnnotationHelper.getAnnotationElement(
                     SiddhiConstants.ANNOTATION_STATISTICS,
                     SiddhiConstants.ANNOTATION_ELEMENT_ENABLE, siddhiApp.getAnnotations());
 
             if (statStateEnableElement != null && Boolean.valueOf(statStateEnableElement.getValue())) {
                 siddhiAppContext.setRootMetricsLevel(Level.BASIC);
             } else {
-                Element statStateElement = AnnotationHelper.getAnnotationElement(
+                AnnotationElement statStateElement = AnnotationHelper.getAnnotationElement(
                         SiddhiConstants.ANNOTATION_STATISTICS, null, siddhiApp.getAnnotations());
                 // Both annotation and statElement should be checked since siddhi uses
                 // @app:statistics(reporter = 'console', interval = '5' )
@@ -144,12 +144,12 @@ public class SiddhiAppParser {
                     siddhiAppContext.setRootMetricsLevel(Level.BASIC);
                 }
             }
-            Element statStateIncludeElement = AnnotationHelper.getAnnotationElement(
+            AnnotationElement statStateIncludeElement = AnnotationHelper.getAnnotationElement(
                     SiddhiConstants.ANNOTATION_STATISTICS,
                     SiddhiConstants.ANNOTATION_ELEMENT_INCLUDE, siddhiApp.getAnnotations());
             siddhiAppContext.setIncludedMetrics(io.siddhi.core.util.parser.helper.AnnotationHelper.generateIncludedMetrics(statStateIncludeElement));
 
-            Element transportCreationEnabledElement = AnnotationHelper.getAnnotationElement(
+            AnnotationElement transportCreationEnabledElement = AnnotationHelper.getAnnotationElement(
                     SiddhiConstants.TRANSPORT_CHANNEL_CREATION_IDENTIFIER, null, siddhiApp.getAnnotations());
             if (transportCreationEnabledElement == null) {
                 siddhiAppContext.setTransportChannelCreationEnabled(true);
@@ -177,7 +177,7 @@ public class SiddhiAppParser {
                 String increment = null;
                 TimestampGenerator timestampGenerator = new TimestampGeneratorImpl(siddhiAppContext);
                 // Get the optional elements of playback annotation
-                for (Element e : annotation.getElements()) {
+                for (AnnotationElement e : annotation.getElements()) {
                     if (SiddhiConstants.ANNOTATION_ELEMENT_IDLE_TIME.equalsIgnoreCase(e.getKey())) {
                         idleTime = e.getValue();
                     } else if (SiddhiConstants.ANNOTATION_ELEMENT_INCREMENT.equalsIgnoreCase(e.getKey())) {
@@ -222,7 +222,7 @@ public class SiddhiAppParser {
 
         } catch (DuplicateAnnotationException e) {
             throw new DuplicateAnnotationException(e.getMessageWithOutContext() + " for the same Siddhi app " +
-                    siddhiApp.toString(), e, e.getQueryContextStartIndex(), e.getQueryContextEndIndex(),
+                    siddhiApp, e, e.getQueryContextStartIndex(), e.getQueryContextEndIndex(),
                     siddhiAppContext.getName(), siddhiAppContext.getSiddhiAppString());
         }
 
@@ -302,9 +302,9 @@ public class SiddhiAppParser {
                     streamHandlers.addAll((((StateInputStream) ((Query) executionElement).getInputStream()).getStreamHandlers()));
                 }
                 for (StreamHandler streamHandler : streamHandlers) {
-                    if (streamHandler instanceof In) {
-                        findExecutedElements.add(((In) streamHandler).getSourceId());
-                    }
+//                    if (streamHandler instanceof In) {
+//                        findExecutedElements.add(((In) streamHandler).getSourceId());
+//                    }
                 }
             } else {
                 List<Query> queries = ((Partition) executionElement).getQueryList();
@@ -320,9 +320,9 @@ public class SiddhiAppParser {
                         streamHandlers.addAll((((StateInputStream) query.getInputStream()).getStreamHandlers()));
                     }
                     for (StreamHandler streamHandler : streamHandlers) {
-                        if (streamHandler instanceof In) {
-                            findExecutedElements.add(((In) streamHandler).getSourceId());
-                        }
+//                        if (streamHandler instanceof In) {
+//                            findExecutedElements.add(((In) streamHandler).getSourceId());
+//                        }
                     }
                 }
             }
@@ -389,9 +389,7 @@ public class SiddhiAppParser {
             faultStreamDefinition.attribute(attribute.getName(), attribute.getType());
         }
         faultStreamDefinition.attribute("_error", Attribute.Type.OBJECT);
-
-        faultStreamDefinition.setQueryContextStartIndex(streamDefinition.getQueryContextStartIndex());
-        faultStreamDefinition.setQueryContextEndIndex(streamDefinition.getQueryContextEndIndex());
+        faultStreamDefinition.setContext(streamDefinition.getContext());
         return faultStreamDefinition;
     }
 

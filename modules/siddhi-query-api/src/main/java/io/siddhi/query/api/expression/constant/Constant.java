@@ -17,11 +17,11 @@
  */
 package io.siddhi.query.api.expression.constant;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.expression.Expression;
 
 /**
  * Constant
  */
-public interface Constant extends SiddhiElement {
+public abstract class Constant extends Expression {
 
 }

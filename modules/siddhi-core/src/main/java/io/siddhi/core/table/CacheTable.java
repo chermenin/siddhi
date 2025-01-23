@@ -41,7 +41,7 @@ import io.siddhi.core.util.parser.EventHolderPasser;
 import io.siddhi.core.util.parser.ExpressionParser;
 import io.siddhi.core.util.parser.OperatorParser;
 import io.siddhi.query.api.annotation.Annotation;
-import io.siddhi.query.api.annotation.Element;
+import io.siddhi.query.api.annotation.AnnotationElement;
 import io.siddhi.query.api.definition.Attribute;
 import io.siddhi.query.api.definition.TableDefinition;
 import io.siddhi.query.api.expression.Expression;
@@ -241,8 +241,8 @@ public abstract class CacheTable extends InMemoryTable {
         if (primaryKeys == null) {
             return false;
         }
-        List<Element> keys = primaryKeys.getElements();
-        for (Element element : keys) {
+        List<AnnotationElement> keys = primaryKeys.getElements();
+        for (AnnotationElement element : keys) {
             primaryKeysArray.add(element.getValue());
         }
         recursivelyCheckConditionToRouteToCache(condition, primaryKeysArray, matchingMetaInfoHolder);

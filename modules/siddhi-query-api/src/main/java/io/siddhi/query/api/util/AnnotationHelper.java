@@ -18,8 +18,9 @@
 
 package io.siddhi.query.api.util;
 
+import io.siddhi.query.api.Context;
 import io.siddhi.query.api.annotation.Annotation;
-import io.siddhi.query.api.annotation.Element;
+import io.siddhi.query.api.annotation.AnnotationElement;
 import io.siddhi.query.api.exception.DuplicateAnnotationException;
 
 import java.util.Arrays;
@@ -50,8 +51,13 @@ public class AnnotationHelper {
                 if (annotation == null) {
                     annotation = aAnnotation;
                 } else {
-                    throw new DuplicateAnnotationException("Annotation @" + annotationName + " is defined twice",
-                            aAnnotation.getQueryContextStartIndex(), aAnnotation.getQueryContextEndIndex());
+                    Context context = aAnnotation.getContext();
+                    if (context != null) {
+                        throw new DuplicateAnnotationException("Annotation @" + annotationName + " is defined twice",
+                                context.getStartIndex(), context.getEndIndex());
+                    } else {
+                        throw new DuplicateAnnotationException("Annotation @" + annotationName + " is defined twice");
+                    }
                 }
             }
         }
@@ -70,22 +76,27 @@ public class AnnotationHelper {
     }
 
     // TODO: 1/28/17 update helper methods to work with nested annotations.
-    public static Element getAnnotationElement(String annotationName, String elementName,
+    public static AnnotationElement getAnnotationElement(String annotationName, String elementName,
                                                List<Annotation> annotationList) {
 
         Annotation annotation = getAnnotation(annotationName, annotationList);
         if (annotation != null) {
-            Element element = null;
-            for (Element aElement : annotation.getElements()) {
+            AnnotationElement element = null;
+            for (AnnotationElement aElement : annotation.getElements()) {
                 if (elementName == null) {
                     if (aElement.getKey() == null) {
 
                         if (element == null) {
                             element = aElement;
                         } else {
-                            throw new DuplicateAnnotationException("Annotation element @" + annotationName + "(...) " +
-                                    "is defined twice", aElement.getQueryContextStartIndex(),
-                                    aElement.getQueryContextEndIndex());
+                            Context context = aElement.getContext();
+                            if (context != null) {
+                                throw new DuplicateAnnotationException("Annotation element @" + annotationName +
+                                        "(...) is defined twice", context.getStartIndex(), context.getEndIndex());
+                            } else {
+                                throw new DuplicateAnnotationException("Annotation element @" + annotationName +
+                                        "(...) is defined twice");
+                            }
                         }
                     }
                 } else {
@@ -94,9 +105,15 @@ public class AnnotationHelper {
                         if (element == null) {
                             element = aElement;
                         } else {
-                            throw new DuplicateAnnotationException("Annotation element @" + annotationName + "(" +
-                                    elementName + "=...) is defined twice", aElement.getQueryContextStartIndex(),
-                                    aElement.getQueryContextEndIndex());
+                            Context context = aElement.getContext();
+                            if (context != null) {
+                                throw new DuplicateAnnotationException("Annotation element @" + annotationName + "(" +
+                                        elementName + "=...) is defined twice", context.getStartIndex(),
+                                        context.getEndIndex());
+                            } else {
+                                throw new DuplicateAnnotationException("Annotation element @" + annotationName + "(" +
+                                        elementName + "=...) is defined twice");
+                            }
                         }
                     }
                 }

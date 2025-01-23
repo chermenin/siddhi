@@ -39,7 +39,7 @@ import io.siddhi.core.util.parser.OnDemandQueryParser;
 import io.siddhi.core.window.Window;
 import io.siddhi.query.api.aggregation.TimePeriod;
 import io.siddhi.query.api.annotation.Annotation;
-import io.siddhi.query.api.annotation.Element;
+import io.siddhi.query.api.annotation.AnnotationElement;
 import io.siddhi.query.api.definition.AggregationDefinition;
 import io.siddhi.query.api.definition.Attribute;
 import io.siddhi.query.api.definition.TableDefinition;
@@ -177,8 +177,8 @@ public class IncrementalDataPurger implements Runnable {
                 List<Annotation> retentions = purge.getAnnotations(SiddhiConstants.NAMESPACE_RETENTION_PERIOD);
                 if (retentions != null && !retentions.isEmpty()) {
                     Annotation retention = retentions.get(0);
-                    List<Element> elements = retention.getElements();
-                    for (Element element : elements) {
+                    List<AnnotationElement> elements = retention.getElements();
+                    for (AnnotationElement element : elements) {
                         TimePeriod.Duration duration = normalizeDuration(element.getKey());
                         if (!activeIncrementalDurations.contains(duration)) {
                             throw new SiddhiAppCreationException(duration + " granularity cannot be purged since " +

@@ -48,7 +48,7 @@ import io.siddhi.core.util.lock.LockWrapper;
 import io.siddhi.core.util.parser.helper.QueryParserHelper;
 import io.siddhi.core.util.statistics.LatencyTracker;
 import io.siddhi.core.window.Window;
-import io.siddhi.query.api.annotation.Element;
+import io.siddhi.query.api.annotation.AnnotationElement;
 import io.siddhi.query.api.definition.AbstractDefinition;
 import io.siddhi.query.api.exception.DuplicateDefinitionException;
 import io.siddhi.query.api.execution.query.Query;
@@ -98,7 +98,7 @@ public class QueryParser {
                                          String queryIndex, boolean partitioned, String partitionId) {
         List<VariableExpressionExecutor> executors = new ArrayList<>();
         QueryRuntimeImpl queryRuntime;
-        Element nameElement = null;
+        AnnotationElement nameElement = null;
         LatencyTracker latencyTracker = null;
         LockWrapper lockWrapper = null;
         try {
@@ -123,8 +123,8 @@ public class QueryParser {
                             "' is performing snapshot rate limiting, it can only insert '" +
                             OutputStream.OutputEventType.ALL_EVENTS +
                             "' but it is inserting '" + outputEventType + "'!",
-                            query.getOutputStream().getQueryContextStartIndex(),
-                            query.getOutputStream().getQueryContextEndIndex());
+                            query.getOutputStream().getContext().getStartIndex(),
+                            query.getOutputStream().getContext().getEndIndex());
                 }
             }
             siddhiQueryContext.setOutputEventType(outputEventType);
@@ -156,7 +156,7 @@ public class QueryParser {
                 }
             }
 
-            Element synchronizedElement = AnnotationHelper.getAnnotationElement("synchronized",
+            AnnotationElement synchronizedElement = AnnotationHelper.getAnnotationElement("synchronized",
                     null, query.getAnnotations());
             if (synchronizedElement != null) {
                 if (!("false".equalsIgnoreCase(synchronizedElement.getValue()))) {

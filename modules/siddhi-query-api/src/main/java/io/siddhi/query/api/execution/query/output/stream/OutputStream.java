@@ -17,18 +17,16 @@
  */
 package io.siddhi.query.api.execution.query.output.stream;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 
 /**
  * Query output stream
  */
-public abstract class OutputStream implements SiddhiElement {
+public abstract class OutputStream extends Element {
 
     private static final long serialVersionUID = 1L;
     protected String id;
     protected OutputEventType outputEventType;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
     public String getId() {
 
@@ -87,30 +85,6 @@ public abstract class OutputStream implements SiddhiElement {
         int result = outputEventType != null ? outputEventType.hashCode() : 0;
         result = 31 * result + (id != null ? id.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 
     /**

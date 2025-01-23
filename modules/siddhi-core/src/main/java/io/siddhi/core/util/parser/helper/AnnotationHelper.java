@@ -20,7 +20,7 @@ package io.siddhi.core.util.parser.helper;
 
 import io.siddhi.annotation.Extension;
 import io.siddhi.core.util.SiddhiConstants;
-import io.siddhi.query.api.annotation.Element;
+import io.siddhi.query.api.annotation.AnnotationElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +54,7 @@ public class AnnotationHelper {
         return out.toString();
     }
 
-    public static List<String> generateIncludedMetrics(Element metrics) {
+    public static List<String> generateIncludedMetrics(AnnotationElement metrics) {
         List<String> regexs = new ArrayList<String>();
         if (metrics != null) {
             String[] metricStrings = metrics.getValue().split(",");

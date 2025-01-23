@@ -17,12 +17,14 @@
  */
 package io.siddhi.query.compiler.internal;
 
+import io.siddhi.query.api.Context;
+import io.siddhi.query.api.ScriptIndex;
 import io.siddhi.query.api.SiddhiApp;
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 import io.siddhi.query.api.aggregation.TimePeriod;
 import io.siddhi.query.api.aggregation.Within;
 import io.siddhi.query.api.annotation.Annotation;
-import io.siddhi.query.api.annotation.Element;
+import io.siddhi.query.api.annotation.AnnotationElement;
 import io.siddhi.query.api.definition.AggregationDefinition;
 import io.siddhi.query.api.definition.Attribute;
 import io.siddhi.query.api.definition.FunctionDefinition;
@@ -589,7 +591,7 @@ public class SiddhiQLBaseVisitorImpl extends SiddhiQLBaseVisitor {
         Annotation annotation = new Annotation((String) visit(ctx.name()));
 
         for (SiddhiQLParser.Annotation_elementContext elementContext : ctx.annotation_element()) {
-            annotation.element((Element) visit(elementContext));
+            annotation.element((AnnotationElement) visit(elementContext));
         }
         populateQueryContext(annotation, ctx);
         return annotation;
@@ -608,7 +610,7 @@ public class SiddhiQLBaseVisitorImpl extends SiddhiQLBaseVisitor {
         Annotation annotation = Annotation.annotation((String) visit(ctx.name()));
 
         for (SiddhiQLParser.Annotation_elementContext elementContext : ctx.annotation_element()) {
-            annotation.element((Element) visit(elementContext));
+            annotation.element((AnnotationElement) visit(elementContext));
         }
 
         for (SiddhiQLParser.AnnotationContext annotationContext : ctx.annotation()) {
@@ -630,10 +632,10 @@ public class SiddhiQLBaseVisitorImpl extends SiddhiQLBaseVisitor {
 
         Element element;
         if (ctx.property_name() != null) {
-            element = new Element((String) visit(ctx.property_name()), ((StringConstant) visit(ctx.property_value()))
+            element = new AnnotationElement((String) visit(ctx.property_name()), ((StringConstant) visit(ctx.property_value()))
                     .getValue());
         } else {
-            element = new Element(null, ((StringConstant) visit(ctx.property_value())).getValue());
+            element = new AnnotationElement(null, ((StringConstant) visit(ctx.property_value())).getValue());
         }
         populateQueryContext(element, ctx);
         return element;
@@ -2890,22 +2892,22 @@ public class SiddhiQLBaseVisitorImpl extends SiddhiQLBaseVisitor {
     public SiddhiParserException newSiddhiParserException(ParserRuleContext context) {
 
         return new SiddhiParserException("Syntax error in SiddhiQL, near '" + context.getText() + "'.",
-                new int[]{context.getStart().getLine(), context.getStart().getCharPositionInLine()},
-                new int[]{context.getStop().getLine(), context.getStop().getCharPositionInLine()});
+                new ScriptIndex(context.getStart().getLine(), context.getStart().getCharPositionInLine()),
+                new ScriptIndex(context.getStop().getLine(), context.getStop().getCharPositionInLine()));
     }
 
     public SiddhiParserException newSiddhiParserException(ParserRuleContext context, String message) {
 
         return new SiddhiParserException("Syntax error in SiddhiQL, near '" + context.getText() + "', " + message + ".",
-                new int[]{context.getStart().getLine(), context.getStart().getCharPositionInLine()},
-                new int[]{context.getStop().getLine(), context.getStop().getCharPositionInLine()});
+                new ScriptIndex(context.getStart().getLine(), context.getStart().getCharPositionInLine()),
+                new ScriptIndex(context.getStop().getLine(), context.getStop().getCharPositionInLine()));
     }
 
     public SiddhiParserException newSiddhiParserException(ParserRuleContext context, String message, Throwable t) {
 
         return new SiddhiParserException("Syntax error in SiddhiQL, near '" + context.getText() + "', " + message + ".",
-                t, new int[]{context.getStart().getLine(), context.getStart().getCharPositionInLine()},
-                new int[]{context.getStop().getLine(), context.getStop().getCharPositionInLine()});
+                t, new ScriptIndex(context.getStart().getLine(), context.getStart().getCharPositionInLine()),
+                new ScriptIndex(context.getStop().getLine(), context.getStop().getCharPositionInLine()));
     }
 
     @Override
@@ -3132,15 +3134,14 @@ public class SiddhiQLBaseVisitorImpl extends SiddhiQLBaseVisitor {
         }
     }
 
-    private void populateQueryContext(SiddhiElement siddhiElement, @NotNull ParserRuleContext ctx) {
-
-        if (siddhiElement != null && siddhiElement.getQueryContextStartIndex() == null &&
-                siddhiElement.getQueryContextEndIndex() == null) {
-            siddhiElement.setQueryContextStartIndex(new int[]{ctx.getStart().getLine(),
-                    ctx.getStart().getCharPositionInLine()});
-            siddhiElement.setQueryContextEndIndex(new int[]{ctx.getStop().getLine(),
-                    ctx.getStop().getCharPositionInLine() + 1 + ctx.getStop().getStopIndex()
-                            - ctx.getStop().getStartIndex()});
+    private void populateQueryContext(Element element, @NotNull ParserRuleContext ctx) {
+        if (element != null) {
+            element.setContext(new Context(
+                    new ScriptIndex(ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine()),
+                    new ScriptIndex(ctx.getStop().getLine(),
+                            ctx.getStop().getCharPositionInLine() + 1 + ctx.getStop().getStopIndex()
+                                    - ctx.getStop().getStartIndex())
+            ));
         }
     }
 

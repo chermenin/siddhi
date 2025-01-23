@@ -17,6 +17,7 @@
  */
 package io.siddhi.core.exception;
 
+import io.siddhi.query.api.ScriptIndex;
 import io.siddhi.query.api.SiddhiApp;
 import io.siddhi.query.api.exception.SiddhiAppContextException;
 import io.siddhi.query.api.util.ExceptionUtil;
@@ -27,8 +28,8 @@ import io.siddhi.query.api.util.ExceptionUtil;
 public class OnDemandQueryCreationException extends StoreQueryCreationException implements SiddhiAppContextException {
     boolean classLoadingIssue = false;
     private String message;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
+    private ScriptIndex queryContextStartIndex;
+    private ScriptIndex queryContextEndIndex;
     private String siddhiAppName = null;
     private String siddhiAppPortion = null;
 
@@ -58,29 +59,29 @@ public class OnDemandQueryCreationException extends StoreQueryCreationException 
         super(throwable);
     }
 
-    public OnDemandQueryCreationException(String message, int[] queryContextStartIndex,
-                                          int[] queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
+    public OnDemandQueryCreationException(String message, ScriptIndex queryContextStartIndex,
+                                          ScriptIndex queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
         super(message);
         this.message = message;
         setQueryContextIndexIfAbsent(queryContextStartIndex, queryContextEndIndex, siddhiAppName, siddhiAppString);
     }
 
-    public OnDemandQueryCreationException(String message, Throwable throwable, int[] queryContextStartIndex,
-                                          int[] queryContextEndIndex) {
+    public OnDemandQueryCreationException(String message, Throwable throwable, ScriptIndex queryContextStartIndex,
+                                          ScriptIndex queryContextEndIndex) {
         super(message, throwable);
         this.message = message;
         setQueryContextIndexIfAbsent(queryContextStartIndex, queryContextEndIndex, siddhiAppName, null);
     }
 
-    public OnDemandQueryCreationException(String message, int[] queryContextStartIndex,
-                                          int[] queryContextEndIndex) {
+    public OnDemandQueryCreationException(String message, ScriptIndex queryContextStartIndex,
+                                          ScriptIndex queryContextEndIndex) {
         super(message);
         this.message = message;
         setQueryContextIndexIfAbsent(queryContextStartIndex, queryContextEndIndex, siddhiAppName, null);
     }
 
-    public OnDemandQueryCreationException(String message, Throwable throwable, int[] queryContextStartIndex,
-                                          int[] queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
+    public OnDemandQueryCreationException(String message, Throwable throwable, ScriptIndex queryContextStartIndex,
+                                          ScriptIndex queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
         super(message, throwable);
         this.message = message;
         setQueryContextIndexIfAbsent(queryContextStartIndex, queryContextEndIndex, siddhiAppName, siddhiAppString);
@@ -90,8 +91,8 @@ public class OnDemandQueryCreationException extends StoreQueryCreationException 
         return classLoadingIssue;
     }
 
-    public void setQueryContextIndexIfAbsent(int[] queryContextStartIndex,
-                                             int[] queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
+    public void setQueryContextIndexIfAbsent(ScriptIndex queryContextStartIndex,
+                                             ScriptIndex queryContextEndIndex, String siddhiAppName, String siddhiAppString) {
         if (this.siddhiAppName == null) {
             this.siddhiAppName = siddhiAppName;
         }
@@ -107,11 +108,11 @@ public class OnDemandQueryCreationException extends StoreQueryCreationException 
         }
     }
 
-    public int[] getQueryContextStartIndex() {
+    public ScriptIndex getQueryContextStartIndex() {
         return queryContextStartIndex;
     }
 
-    public int[] getQueryContextEndIndex() {
+    public ScriptIndex getQueryContextEndIndex() {
         return queryContextEndIndex;
     }
 

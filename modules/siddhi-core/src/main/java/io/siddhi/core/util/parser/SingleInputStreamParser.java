@@ -247,7 +247,7 @@ public class SingleInputStreamParser {
             return abstractStreamProcessor;
         } else {
             throw new SiddhiAppCreationException(streamHandler.getClass().getName() + " is not supported",
-                    streamHandler.getQueryContextStartIndex(), streamHandler.getQueryContextEndIndex());
+                    streamHandler.getContext().getStartIndex(), streamHandler.getContext().getEndIndex());
         }
     }
 
@@ -288,8 +288,8 @@ public class SingleInputStreamParser {
             metaStreamEvent.addInputDefinition(inputDefinition);
         } else {
             throw new SiddhiAppCreationException("Stream/table/window/aggregation definition with ID '" +
-                    inputStream.getStreamId() + "' has not been defined", inputStream.getQueryContextStartIndex(),
-                    inputStream.getQueryContextEndIndex());
+                    inputStream.getStreamId() + "' has not been defined", inputStream.getContext().getStartIndex(),
+                    inputStream.getContext().getEndIndex());
         }
 
         if ((inputStream.getStreamReferenceId() != null) &&

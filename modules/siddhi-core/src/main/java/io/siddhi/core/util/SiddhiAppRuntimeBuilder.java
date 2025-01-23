@@ -174,8 +174,8 @@ public class SiddhiAppRuntimeBuilder {
         if (oldQueryRuntime != null) {
             throw new SiddhiAppCreationException("Multiple queries with name '" + queryRuntime.getQueryId() +
                     "' defined in Siddhi App '" + siddhiAppContext.getName() + "'",
-                    queryRuntime.getQuery().getQueryContextStartIndex(),
-                    queryRuntime.getQuery().getQueryContextEndIndex());
+                    queryRuntime.getQuery().getContext().getStartIndex(),
+                    queryRuntime.getQuery().getContext().getEndIndex());
         }
         StreamRuntime streamRuntime = queryRuntime.getStreamRuntime();
 

@@ -20,15 +20,13 @@ package io.siddhi.query.api.execution.query.input.state;
 /**
  * Count state element used in patterns
  */
-public class CountStateElement implements StateElement {
+public class CountStateElement extends StateElement {
 
     public static final int ANY = -1;
     private static final long serialVersionUID = 1L;
     private StreamStateElement streamStateElement;
     private int minCount = ANY;
     private int maxCount = ANY;
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
     public CountStateElement(StreamStateElement streamStateElement, int minCount, int maxCount) {
 
@@ -94,29 +92,5 @@ public class CountStateElement implements StateElement {
         result = 31 * result + minCount;
         result = 31 * result + maxCount;
         return result;
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 }

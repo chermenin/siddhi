@@ -27,7 +27,7 @@ import io.siddhi.core.util.statistics.metrics.Level;
 import io.siddhi.core.util.transport.DynamicOptions;
 import io.siddhi.core.util.transport.OptionHolder;
 import io.siddhi.core.util.transport.TemplateBuilder;
-import io.siddhi.query.api.annotation.Element;
+import io.siddhi.query.api.annotation.AnnotationElement;
 import io.siddhi.query.api.definition.StreamDefinition;
 
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ public abstract class SinkMapper {
     private SiddhiAppContext siddhiAppContext;
 
     public final void init(StreamDefinition streamDefinition, String type, OptionHolder mapOptionHolder,
-                           List<Element> unmappedPayloadList, Sink sink, ConfigReader mapperConfigReader,
+                           List<AnnotationElement> unmappedPayloadList, Sink sink, ConfigReader mapperConfigReader,
                            LatencyTracker mapperLatencyTracker, OptionHolder sinkOptionHolder,
                            SiddhiAppContext siddhiAppContext) {
         this.mapperLatencyTracker = mapperLatencyTracker;
@@ -76,10 +76,10 @@ public abstract class SinkMapper {
      * @param streamDefinition    Stream definition corresponding to mapper
      * @param unmappedPayloadList mapper payload template list
      */
-    protected void buildMapperTemplate(StreamDefinition streamDefinition, List<Element> unmappedPayloadList) {
+    protected void buildMapperTemplate(StreamDefinition streamDefinition, List<AnnotationElement> unmappedPayloadList) {
         if (unmappedPayloadList != null && !unmappedPayloadList.isEmpty()) {
             templateBuilderMap = new HashMap<>();
-            for (Element e : unmappedPayloadList) {
+            for (AnnotationElement e : unmappedPayloadList) {
                 TemplateBuilder templateBuilder = new TemplateBuilder(streamDefinition, e.getValue());
                 if (templateBuilderMap.containsKey(e.getKey())) {
                     throw new SiddhiAppCreationException("Duplicate Keys, " + e.getKey() + ", in @payload() ");

@@ -18,6 +18,7 @@
 
 package io.siddhi.query.api.util;
 
+import io.siddhi.query.api.ScriptIndex;
 import io.siddhi.query.api.exception.SiddhiAppContextException;
 
 /**
@@ -37,29 +38,29 @@ public class ExceptionUtil {
         }
     }
 
-    public static String getMessageWithContext(String siddhiAppName, int[] queryContextStartIndex,
-                                               int[] queryContextEndIndex, String siddhiAppPortion, String message) {
+    public static String getMessageWithContext(String siddhiAppName, ScriptIndex queryContextStartIndex,
+                                               ScriptIndex queryContextEndIndex, String siddhiAppPortion, String message) {
 
         if (siddhiAppName != null) {
             if (queryContextStartIndex != null && queryContextEndIndex != null) {
                 if (siddhiAppPortion != null) {
                     if (message != null) {
-                        return "Error on '" + siddhiAppName + "' @ Line: " + queryContextEndIndex[0] +
-                                ". Position: " + queryContextEndIndex[1] + ", near '" + siddhiAppPortion + "'. " +
+                        return "Error on '" + siddhiAppName + "' @ Line: " + queryContextEndIndex.getLine() +
+                                ". Position: " + queryContextEndIndex.getPosition() + ", near '" + siddhiAppPortion + "'. " +
                                 message;
                     } else {
-                        return "Error on '" + siddhiAppName + "' @ Line: " + queryContextEndIndex[0] +
-                                ". Position: " + queryContextEndIndex[1] + ", near '" + siddhiAppPortion + "'.";
+                        return "Error on '" + siddhiAppName + "' @ Line: " + queryContextEndIndex.getLine() +
+                                ". Position: " + queryContextEndIndex.getPosition() + ", near '" + siddhiAppPortion + "'.";
                     }
                 } else {
                     if (message != null) {
-                        return "Error on '" + siddhiAppName + "' between @ Line: " + queryContextStartIndex[0] +
-                                ". Position: " + queryContextStartIndex[1] + " and @ Line: " + queryContextEndIndex[0] +
-                                ". Position: " + queryContextEndIndex[1] + ". " + message;
+                        return "Error on '" + siddhiAppName + "' between @ Line: " + queryContextStartIndex.getLine() +
+                                ". Position: " + queryContextStartIndex.getPosition() + " and @ Line: " + queryContextEndIndex.getLine() +
+                                ". Position: " + queryContextEndIndex.getPosition() + ". " + message;
                     } else {
-                        return "Error on '" + siddhiAppName + "' between @ Line: " + queryContextStartIndex[0] +
-                                ". Position: " + queryContextStartIndex[1] + " and @ Line: " + queryContextEndIndex[0] +
-                                ". Position: " + queryContextEndIndex[1] + ".";
+                        return "Error on '" + siddhiAppName + "' between @ Line: " + queryContextStartIndex.getLine() +
+                                ". Position: " + queryContextStartIndex.getPosition() + " and @ Line: " + queryContextEndIndex.getLine() +
+                                ". Position: " + queryContextEndIndex.getPosition() + ".";
                     }
                 }
             } else {
@@ -81,22 +82,22 @@ public class ExceptionUtil {
             if (queryContextStartIndex != null && queryContextEndIndex != null) {
                 if (siddhiAppPortion != null) {
                     if (message != null) {
-                        return "Error @ Line: " + queryContextEndIndex[0] +
-                                ". Position: " + queryContextEndIndex[1] + ", near '" + siddhiAppPortion + "'. " +
+                        return "Error @ Line: " + queryContextEndIndex.getLine() +
+                                ". Position: " + queryContextEndIndex.getPosition() + ", near '" + siddhiAppPortion + "'. " +
                                 message;
                     } else {
-                        return "Error @ Line: " + queryContextEndIndex[0] +
-                                ". Position: " + queryContextEndIndex[1] + ", near '" + siddhiAppPortion + "'.";
+                        return "Error @ Line: " + queryContextEndIndex.getLine() +
+                                ". Position: " + queryContextEndIndex.getPosition() + ", near '" + siddhiAppPortion + "'.";
                     }
                 } else {
                     if (message != null) {
-                        return "Error between @ Line: " + queryContextStartIndex[0] +
-                                ". Position: " + queryContextStartIndex[1] + " and @ Line: " + queryContextEndIndex[0] +
-                                ". Position: " + queryContextEndIndex[1] + ". " + message;
+                        return "Error between @ Line: " + queryContextStartIndex.getLine() +
+                                ". Position: " + queryContextStartIndex.getPosition() + " and @ Line: " + queryContextEndIndex.getLine() +
+                                ". Position: " + queryContextEndIndex.getPosition() + ". " + message;
                     } else {
-                        return "Error between @ Line: " + queryContextStartIndex[0] +
-                                ". Position: " + queryContextStartIndex[1] + " and @ Line: " + queryContextEndIndex[0] +
-                                ". Position: " + queryContextEndIndex[1] + ".";
+                        return "Error between @ Line: " + queryContextStartIndex.getLine() +
+                                ". Position: " + queryContextStartIndex.getPosition() + " and @ Line: " + queryContextEndIndex.getLine() +
+                                ". Position: " + queryContextEndIndex.getPosition() + ".";
                     }
                 }
             } else {
@@ -114,12 +115,12 @@ public class ExceptionUtil {
         }
     }
 
-    public static String getContext(int[] startIndex, int[] endIndex, String siddhiApp) {
+    public static String getContext(ScriptIndex startIndex, ScriptIndex endIndex, String siddhiApp) {
 
-        int startLinePosition = ordinalIndexOf(siddhiApp, "\n", startIndex[0]);
-        int endLinePosition = ordinalIndexOf(siddhiApp, "\n", endIndex[0]);
-        return siddhiApp.substring(startLinePosition + startIndex[1], endLinePosition +
-                endIndex[1]);
+        int startLinePosition = ordinalIndexOf(siddhiApp, "\n", startIndex.getLine());
+        int endLinePosition = ordinalIndexOf(siddhiApp, "\n", endIndex.getLine());
+        return siddhiApp.substring(startLinePosition + startIndex.getPosition(), endLinePosition +
+                endIndex.getPosition());
     }
 
     private static int ordinalIndexOf(String str, String substr, int n) {

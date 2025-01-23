@@ -35,7 +35,7 @@ import io.siddhi.core.util.extension.validator.InputParameterValidator;
 import io.siddhi.core.util.snapshot.state.State;
 import io.siddhi.core.util.snapshot.state.StateFactory;
 import io.siddhi.core.util.snapshot.state.StateHolder;
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 import io.siddhi.query.api.definition.AbstractDefinition;
 import io.siddhi.query.api.definition.Attribute;
 import io.siddhi.query.api.definition.StreamDefinition;
@@ -69,7 +69,7 @@ public abstract class AbstractStreamProcessor<S extends State> implements Proces
                               ConfigReader configReader,
                               boolean outputExpectsExpiredEvents,
                               boolean findToBeExecuted,
-                              boolean groupBy, SiddhiElement siddhiElement,
+                              boolean groupBy, Element element,
                               SiddhiQueryContext siddhiQueryContext) {
         this.metaStreamEvent = metaStreamEvent;
         this.siddhiQueryContext = siddhiQueryContext;
@@ -86,8 +86,7 @@ public abstract class AbstractStreamProcessor<S extends State> implements Proces
             siddhiQueryContext.getSiddhiAppContext().addEternalReferencedHolder(this);
             if (additionalAttributes.size() > 0) {
                 StreamDefinition outputDefinition = StreamDefinition.id(inputDefinition.getId());
-                outputDefinition.setQueryContextStartIndex(siddhiElement.getQueryContextStartIndex());
-                outputDefinition.setQueryContextEndIndex(siddhiElement.getQueryContextEndIndex());
+                outputDefinition.setContext(element.getContext());
                 for (Attribute attribute : inputDefinition.getAttributeList()) {
                     outputDefinition.attribute(attribute.getName(), attribute.getType());
                 }
@@ -99,8 +98,8 @@ public abstract class AbstractStreamProcessor<S extends State> implements Proces
             }
         } catch (Throwable t) {
             throw new SiddhiAppCreationException(t.getMessage(), t,
-                    siddhiElement.getQueryContextStartIndex(),
-                    siddhiElement.getQueryContextEndIndex(), siddhiQueryContext.getSiddhiAppContext());
+                    element.getContext().getStartIndex(),
+                    element.getContext().getEndIndex(), siddhiQueryContext.getSiddhiAppContext());
         }
     }
 

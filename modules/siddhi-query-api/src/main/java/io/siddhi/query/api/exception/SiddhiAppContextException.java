@@ -18,17 +18,19 @@
 
 package io.siddhi.query.api.exception;
 
+import io.siddhi.query.api.ScriptIndex;
+
 /**
  * Exception for considering context while throwing extensions
  */
 public interface SiddhiAppContextException {
 
-    void setQueryContextIndexIfAbsent(int[] queryContextStartIndex,
-                                      int[] queryContextEndIndex, String siddhiAppName, String siddhiAppString);
+    void setQueryContextIndexIfAbsent(ScriptIndex queryContextStartIndex,
+                                      ScriptIndex queryContextEndIndex, String siddhiAppName, String siddhiAppString);
 
-    int[] getQueryContextStartIndex();
+    ScriptIndex getQueryContextStartIndex();
 
-    int[] getQueryContextEndIndex();
+    ScriptIndex getQueryContextEndIndex();
 
     String getMessageWithOutContext();
 }

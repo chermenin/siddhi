@@ -17,7 +17,7 @@
  */
 package io.siddhi.query.api.annotation;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,14 +25,12 @@ import java.util.List;
 /**
  * Annotation for siddhi functions and extensions
  */
-public class Annotation implements SiddhiElement {
+public class Annotation extends Element {
 
     private static final long serialVersionUID = 1L;
     private String name;
-    private ArrayList<Element> elements = new ArrayList<Element>();
-    private ArrayList<Annotation> annotations = new ArrayList<Annotation>();
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
+    private ArrayList<AnnotationElement> elements = new ArrayList<>();
+    private ArrayList<Annotation> annotations = new ArrayList<>();
 
     public Annotation(String name) {
 
@@ -54,12 +52,12 @@ public class Annotation implements SiddhiElement {
         this.name = name;
     }
 
-    public List<Element> getElements() {
+    public List<AnnotationElement> getElements() {
 
         return elements;
     }
 
-    public void setElements(List<Element> elements) {
+    public void setElements(List<AnnotationElement> elements) {
 
         this.elements.clear();
         this.elements.addAll(elements);
@@ -67,7 +65,7 @@ public class Annotation implements SiddhiElement {
 
     public String getElement(String key) {
 
-        for (Element element : elements) {
+        for (AnnotationElement element : elements) {
             if (element.getKey() != null && element.getKey().equalsIgnoreCase(key)) {
                 return element.getValue();
             }
@@ -77,17 +75,17 @@ public class Annotation implements SiddhiElement {
 
     public Annotation element(String key, String value) {
 
-        elements.add(new Element(key, value));
+        elements.add(new AnnotationElement(key, value));
         return this;
     }
 
     public Annotation element(String value) {
 
-        elements.add(new Element(null, value));
+        elements.add(new AnnotationElement(null, value));
         return this;
     }
 
-    public Annotation element(Element element) {
+    public Annotation element(AnnotationElement element) {
 
         this.elements.add(element);
         return this;
@@ -181,29 +179,5 @@ public class Annotation implements SiddhiElement {
         result = 31 * result + (elements != null ? elements.hashCode() : 0);
         result = 31 * result + (annotations != null ? annotations.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 }

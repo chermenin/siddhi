@@ -18,9 +18,9 @@
 
 package io.siddhi.query.api.execution.partition;
 
-import io.siddhi.query.api.SiddhiElement;
+import io.siddhi.query.api.Element;
 import io.siddhi.query.api.annotation.Annotation;
-import io.siddhi.query.api.annotation.Element;
+import io.siddhi.query.api.annotation.AnnotationElement;
 import io.siddhi.query.api.exception.SiddhiAppValidationException;
 import io.siddhi.query.api.execution.ExecutionElement;
 import io.siddhi.query.api.execution.query.Query;
@@ -37,15 +37,13 @@ import java.util.Map;
  * {@linkplain io.siddhi.query.api.execution.partition.Partition} class is used to represent the definition of
  * a partition for a Siddhi instance.
  */
-public class Partition implements ExecutionElement, SiddhiElement {
+public class Partition extends Element implements ExecutionElement {
 
     private static final long serialVersionUID = 1L;
     private Map<String, PartitionType> partitionTypeMap = new HashMap<String, PartitionType>();
     private List<Query> queryList = new ArrayList<Query>();
     private List<String> queryNameList = new ArrayList<String>();
     private List<Annotation> annotations = new ArrayList<Annotation>();
-    private int[] queryContextStartIndex;
-    private int[] queryContextEndIndex;
 
     public static Partition partition() {
 
@@ -88,7 +86,7 @@ public class Partition implements ExecutionElement, SiddhiElement {
             throw new SiddhiAppValidationException("Query should not be null");
         }
         String name = null;
-        Element element = AnnotationHelper.getAnnotationElement(SiddhiConstants.ANNOTATION_INFO, SiddhiConstants
+        AnnotationElement element = AnnotationHelper.getAnnotationElement(SiddhiConstants.ANNOTATION_INFO, SiddhiConstants
                 .ANNOTATION_ELEMENT_NAME, query.getAnnotations());
         if (element != null) {
             name = element.getValue();
@@ -96,7 +94,7 @@ public class Partition implements ExecutionElement, SiddhiElement {
         if (name != null && queryNameList.contains(name)) {
             throw new SiddhiAppValidationException("Cannot add Query as another Execution Element already uses " +
                     "its name=" + name + " within the same Partition",
-                    element.getQueryContextStartIndex(), element.getQueryContextEndIndex());
+                    element.getContext().getStartIndex(), element.getContext().getEndIndex());
         }
         queryNameList.add(name);
         this.queryList.add(query);
@@ -109,8 +107,8 @@ public class Partition implements ExecutionElement, SiddhiElement {
         if (partitionTypeMap.containsKey(partitionedStream)) {
             throw new SiddhiAppValidationException("Duplicate partition for Stream " + partitionedStream + "!, "
                     + partitionType.toString() + " cannot be added as " + partitionTypeMap.get(partitionType
-                    .getStreamId()) + " already exist.", partitionType.getQueryContextStartIndex(),
-                    partitionType.getQueryContextEndIndex());
+                    .getStreamId()) + " already exist.", partitionType.getContext().getStartIndex(),
+                    partitionType.getContext().getEndIndex());
         }
         partitionTypeMap.put(partitionType.getStreamId(), partitionType);
     }
@@ -174,29 +172,5 @@ public class Partition implements ExecutionElement, SiddhiElement {
         result = 31 * result + (queryList != null ? queryList.hashCode() : 0);
         result = 31 * result + (annotations != null ? annotations.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public int[] getQueryContextStartIndex() {
-
-        return queryContextStartIndex;
-    }
-
-    @Override
-    public void setQueryContextStartIndex(int[] lineAndColumn) {
-
-        queryContextStartIndex = lineAndColumn;
-    }
-
-    @Override
-    public int[] getQueryContextEndIndex() {
-
-        return queryContextEndIndex;
-    }
-
-    @Override
-    public void setQueryContextEndIndex(int[] lineAndColumn) {
-
-        queryContextEndIndex = lineAndColumn;
     }
 }
